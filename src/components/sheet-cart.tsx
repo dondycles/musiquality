@@ -25,10 +25,10 @@ export default function SheetCard({
             <AvatarFallback className="font-gloock">MQ</AvatarFallback>
           </Avatar>
           <Link
-            href={"/arranger/" + sheet.users.id}
+            href={"/arranger/" + sheet.arranger}
             className="truncate my-auto text-xs text-muted-foreground"
           >
-            {sheet.users.name}
+            {sheet.arranger}
           </Link>
         </div>
         <div className="flex flex-col">
