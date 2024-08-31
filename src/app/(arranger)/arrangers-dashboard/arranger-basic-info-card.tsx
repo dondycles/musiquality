@@ -122,7 +122,7 @@ export default function ArrangerBasicInfoCard() {
             </Badge>
           </div>
         </div>
-        <Tabs defaultValue="account" className="mx-auto  w-full flex flex-col">
+        <Tabs defaultValue="sheets" className="mx-auto  w-full flex flex-col">
           <TabsList className="mx-auto">
             <TabsTrigger value="sheets">Sheets</TabsTrigger>
             <TabsTrigger value="packages">Packages</TabsTrigger>
