@@ -3,7 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-
+import { useAction } from "next-safe-action/hooks";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -13,8 +13,8 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import signUp from "@/actions/signup";
 import { useQueryClient } from "@tanstack/react-query";
+import signUp from "@/actions/signup";
 
 export const signupSchema = z
   .object({
@@ -39,14 +39,21 @@ export default function SignupForm() {
       name: "",
     },
   });
+  const handleSubmit = async (data: z.infer<typeof signupSchema>) => {
+    const { error } = await signUp(data);
+    if (error)
+      return form.setError("password", {
+        message: error,
+      });
+    queryClient.invalidateQueries({
+      queryKey: ["user"],
+    });
+  };
+
   return (
     <Form {...form}>
       <form
-        onSubmit={form.handleSubmit(async (e) => {
-          const { error } = await signUp(e);
-          queryClient.invalidateQueries({ queryKey: ["user"] });
-          console.log(error);
-        })}
+        onSubmit={form.handleSubmit(handleSubmit)}
         className="flex gap-4 flex-col max-w-[288px]"
       >
         <FormField
@@ -105,7 +112,12 @@ export default function SignupForm() {
             </FormItem>
           )}
         />
-        <Button className="flex-1">Sign Up</Button>
+        <Button
+          className="flex-1 disabled"
+          disabled={form.formState.isSubmitting}
+        >
+          Sign Up
+        </Button>
       </form>
     </Form>
   );

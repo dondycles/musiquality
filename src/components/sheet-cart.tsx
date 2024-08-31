@@ -4,6 +4,7 @@ import { Button } from "./ui/button";
 import { Card, CardContent, CardFooter } from "./ui/card";
 import { Database } from "../../database.types";
 import SheetThumbnail from "./SheetThumbnail";
+import Link from "next/link";
 
 export default function SheetCard({
   sheet,
@@ -11,22 +12,29 @@ export default function SheetCard({
   sheet: Database["public"]["Tables"]["sheets"]["Row"];
 }) {
   return (
-    <Card className="shadow-none overflow-hidden bg-muted">
-      <CardContent className="flex  items-center justify-center bg-foreground  max-w-[420px] overflow-hidden p-0">
-        <SheetThumbnail url={sheet.sheet_url} />
-      </CardContent>
+    <Card className="shadow-none overflow-hidden bg-muted w-screen max-w-[244px]">
+      <Link href={"/sheet/" + sheet.id}>
+        <CardContent className="flex items-center justify-center overflow-hidden p-0">
+          <SheetThumbnail url={sheet.sheet_url} />
+        </CardContent>
+      </Link>
       <CardFooter className="flex flex-col gap-2 mt-4 items-start">
         <div className="grid grid-cols-[16px,1fr] gap-2">
           <Avatar className="size-4">
             <AvatarImage src="favicon.ico" alt="arranger" />
             <AvatarFallback className="font-gloock">MQ</AvatarFallback>
           </Avatar>
-          <p className="truncate my-auto text-xs text-muted-foreground">
+          <Link
+            href={"/arranger/" + sheet.users.id}
+            className="truncate my-auto text-xs text-muted-foreground"
+          >
             {sheet.users.name}
-          </p>
+          </Link>
         </div>
         <div className="flex flex-col">
-          <p className="font-semibold">{sheet.title}</p>
+          <Link href={"/sheet/" + sheet.id} className="font-semibold">
+            {sheet.title}
+          </Link>
           <p className="text-muted-foreground text-xs mt-2">
             {sheet.original_artist}
           </p>

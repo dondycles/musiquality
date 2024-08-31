@@ -1,9 +1,10 @@
-import getUser from "@/actions/getuser";
+import { createClient } from "@/utils/supabase/server";
 import SignupForm from "./signup-form";
 import { redirect } from "next/navigation";
 
 export default async function SignupPage() {
-  const user = await getUser();
+  const supabase = createClient();
+  const { user } = (await supabase.auth.getUser()).data;
   if (user) redirect("/");
   return (
     <div className="flex-1 flex flex-col  gap-4 items-center justify-center">

@@ -1,6 +1,6 @@
 "use server";
 
-import { loginSchema } from "@/app/(main)/login/login-form";
+import { loginSchema } from "@/app/(non-arranger)/login/login-form";
 import { createClient } from "@/utils/supabase/server";
 import { z } from "zod";
 

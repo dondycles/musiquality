@@ -75,3 +75,7 @@
   font-weight: 700;
   font-style: normal;
 }
+
+.disabled {
+  @apply disabled:pointer-events-none disabled:animate-pulse disabled:opacity-50;
+}

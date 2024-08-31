@@ -15,6 +15,8 @@ import {
 import { Input } from "@/components/ui/input";
 import login from "@/actions/login";
 import { useQueryClient } from "@tanstack/react-query";
+import { createClient } from "@/utils/supabase/client";
+import createUser from "@/actions/create-user";
 
 export const loginSchema = z.object({
   email: z.string().email(),
@@ -22,6 +24,7 @@ export const loginSchema = z.object({
 });
 
 export default function LoginForm() {
+  const supabase = createClient();
   const queryClient = useQueryClient();
   const form = useForm<z.infer<typeof loginSchema>>({
     resolver: zodResolver(loginSchema),
@@ -34,6 +37,14 @@ export default function LoginForm() {
     const { error } = await login(data);
     if (error) throw new Error(error.message);
     queryClient.invalidateQueries({ queryKey: ["user"] });
+  };
+  const logInWithGoogle = async () => {
+    const { data } = await supabase.auth.signInWithOAuth({
+      provider: "google",
+      options: {
+        redirectTo: `http://localhost:3000/api/auth/callback`,
+      },
+    });
   };
   return (
     <Form {...form}>
@@ -67,7 +78,15 @@ export default function LoginForm() {
             </FormItem>
           )}
         />
-        <Button className="flex-1">Log In</Button>
+        <Button
+          className="flex-1 disabled"
+          disabled={form.formState.isSubmitting}
+        >
+          Log In
+        </Button>
+        <Button type="button" onClick={logInWithGoogle}>
+          Google
+        </Button>
       </form>
     </Form>
   );

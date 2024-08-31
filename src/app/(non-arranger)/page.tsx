@@ -1,6 +1,5 @@
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
-import "@react-pdf-viewer/core/lib/styles/index.css";
 import TopSellingSheets from "@/components/top-selling-sheet";
 import TopArrangers from "@/components/top-arrangers";
 

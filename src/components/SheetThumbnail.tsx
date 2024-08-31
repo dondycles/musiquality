@@ -31,7 +31,6 @@ const pageThumbnailPlugin = (props: PageThumbnailPluginProps): Plugin => {
 export default function SheetThumbnail({ url }: { url: string }) {
   const thumbnailPluginInstance = thumbnailPlugin();
   const { Cover } = thumbnailPluginInstance;
-
   const pageThumbnailPluginInstance = pageThumbnailPlugin({
     PageThumbnail: <Cover getPageIndex={() => 0} width={420} />,
   });
