@@ -42,7 +42,11 @@ export default function LoginForm() {
     await supabase.auth.signInWithOAuth({
       provider: "google",
       options: {
-        redirectTo: `${process.env.NEXT_PUBLIC_ROOT_URL}/api/auth/callback`,
+        redirectTo: `${
+          process.env.NODE_ENV === "development"
+            ? "http://localhost:3000"
+            : "https://musiquality.vercel.app"
+        }/api/auth/callback`,
       },
     });
   };
