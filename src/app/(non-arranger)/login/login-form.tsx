@@ -39,10 +39,10 @@ export default function LoginForm() {
     queryClient.invalidateQueries({ queryKey: ["user"] });
   };
   const logInWithGoogle = async () => {
-    const { data } = await supabase.auth.signInWithOAuth({
+    await supabase.auth.signInWithOAuth({
       provider: "google",
       options: {
-        redirectTo: `http://localhost:3000/api/auth/callback`,
+        redirectTo: `https://musiquality.vercel.app/api/auth/callback`,
       },
     });
   };
