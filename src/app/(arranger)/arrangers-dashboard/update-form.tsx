@@ -53,9 +53,9 @@ export default function UpdateForm({
   const updateUserForm = useForm<z.infer<typeof arrangersMetadataSchema>>({
     resolver: zodResolver(arrangersMetadataSchema),
     defaultValues: {
-      display_name: userData?.arranger_metadata[0]?.display_name ?? "",
+      display_name: userData?.arranger_metadata[0]?.display_name,
       avatar_url: userData?.arranger_metadata[0]?.avatar_url ?? "/favicon.ico",
-      description: userData?.arranger_metadata[0]?.description ?? "",
+      description: userData?.arranger_metadata[0]?.description!,
     },
   });
   const handleUpdate = async (
