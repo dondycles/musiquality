@@ -138,11 +138,27 @@ export default function ArrangerBasicInfoCard() {
         </div>
         <Tabs defaultValue="sheets" className="mx-auto  w-full flex flex-col">
           <TabsList className="w-full justify-start h-fit p-0">
-            <div className="ml-1">
-              <Button>
-                Create <PlusIcon className="ml-1" />
-              </Button>
-            </div>
+            <Dialog>
+              <DialogTrigger>
+                <div className="ml-1">
+                  <Button>
+                    New <PlusIcon className="ml-1" />
+                  </Button>
+                </div>
+              </DialogTrigger>
+              <DialogContent className="p-4">
+                <DialogTitle>New +</DialogTitle>
+                <div className="flex gap-4">
+                  <Button className="flex-1 h-fit">
+                    Music Sheet <MdMusicNote className="ml-1 text-2xl" />
+                  </Button>
+                  <Button className="flex-1 h-fit">
+                    Package <MdLibraryBooks className="ml-1 text-2xl" />
+                  </Button>
+                </div>
+              </DialogContent>
+            </Dialog>
+
             <ScrollArea>
               <div className="flex-1 overflow-x-auto overflow-y-visible truncate p-1 space-x-1">
                 <TabsTrigger value="sheets" className="h-9">
