@@ -1,6 +1,6 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { Pencil1Icon } from "@radix-ui/react-icons";
+import { Pencil1Icon, PlusIcon } from "@radix-ui/react-icons";
 import Image from "next/image";
 import {
   Dialog,
@@ -18,6 +18,9 @@ import UpdateForm from "./update-form";
 import { Badge } from "@/components/ui/badge";
 import { MdLibraryBooks, MdMusicNote, MdPeople, MdStars } from "react-icons/md";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import Link from "next/link";
+import { Input } from "@/components/ui/input";
+import { ScrollArea, ScrollBar } from "@/components/ui/scroll-area";
 
 export default function ArrangerBasicInfoCard() {
   const { toast } = useToast();
@@ -39,29 +42,29 @@ export default function ArrangerBasicInfoCard() {
     return (
       <div className="flex flex-col gap-4 items-center">
         <div className="flex flex-col gap-4 w-full">
-          <div className="flex flex-row gap-4 items-center mx-auto">
-            <div className="relative rounded-full size-24">
-              <Image
-                src={
-                  userData.success?.arranger_metadata[0]?.avatar_url ??
-                  "/favicon.ico"
-                }
-                fill
-                alt={
-                  userData.success?.arranger_metadata[0]?.display_name ??
-                  "User PFP"
-                }
-                className="rounded-full object-cover object-top"
-              />
-            </div>
-            <div>
-              <p className="font-semibold text-lg">
-                {userData.success?.arranger_metadata[0]?.display_name}
-              </p>
-              <p className="text-muted-foreground text-sm">
-                {userData.success?.arranger_metadata[0]?.description}
-              </p>
-            </div>
+          <div className="flex flex-col justify-center gap-4 items-center mx-auto">
+            <Link
+              href={"/arranger/" + userData.success.arranger_metadata[0].id}
+            >
+              <div className="relative rounded-full size-32">
+                <Image
+                  placeholder="blur"
+                  blurDataURL="/favicon.ico"
+                  quality={100}
+                  priority
+                  src={
+                    userData.success?.arranger_metadata[0]?.avatar_url ??
+                    "/favicon.ico"
+                  }
+                  fill
+                  alt={
+                    userData.success?.arranger_metadata[0]?.display_name ??
+                    "User PFP"
+                  }
+                  className="rounded-md object-cover object-top "
+                />
+              </div>
+            </Link>
             <Dialog
               key={"updateForm"}
               open={openForm}
@@ -78,7 +81,7 @@ export default function ArrangerBasicInfoCard() {
               }}
             >
               <DialogTrigger asChild>
-                <Button className="" size={"icon"} variant={"outline"}>
+                <Button size={"icon"} variant={"secondary"} className="size-6">
                   <Pencil1Icon />
                 </Button>
               </DialogTrigger>
@@ -103,34 +106,74 @@ export default function ArrangerBasicInfoCard() {
                 />
               </DialogContent>
             </Dialog>
+            <div className="flex gap-4">
+              <div className="text-center">
+                <p className="font-semibold text-lg">
+                  {userData.success?.arranger_metadata[0]?.display_name}
+                </p>
+                <p className="text-muted-foreground text-sm">
+                  {userData.success?.arranger_metadata[0]?.description}
+                </p>
+              </div>
+            </div>
           </div>
-          <div className="flex gap-2 flex-row mx-auto">
+          <div className="flex gap-2 flex-wrap justify-center items-center">
             <Badge>
-              99 Followers{" "}
+              <span className="line-clamp-1">99 Followers</span>
               <MdPeople size={16} className="ml-1 text-yellow-400" />
             </Badge>
             <Badge>
-              109 Sheets{" "}
+              <span className="line-clamp-1">109 Sheets</span>
               <MdMusicNote size={16} className="ml-1 text-yellow-400" />
             </Badge>
             <Badge>
-              2 Packages{" "}
+              <span className="line-clamp-1">2 Packages</span>
               <MdLibraryBooks size={16} className="ml-1 text-yellow-400" />
             </Badge>
             <Badge>
-              988 Stars <MdStars size={16} className="ml-1 text-yellow-400" />
+              <span className="line-clamp-1">988 Stars</span>
+              <MdStars size={16} className="ml-1 text-yellow-400" />
             </Badge>
           </div>
         </div>
         <Tabs defaultValue="sheets" className="mx-auto  w-full flex flex-col">
-          <TabsList className="mx-auto">
-            <TabsTrigger value="sheets">Sheets</TabsTrigger>
-            <TabsTrigger value="packages">Packages</TabsTrigger>
-            <TabsTrigger value="reviews">Reviews</TabsTrigger>
+          <TabsList className="w-full justify-start h-fit p-0">
+            <div className="ml-1">
+              <Button>
+                Create <PlusIcon className="ml-1" />
+              </Button>
+            </div>
+            <ScrollArea>
+              <div className="flex-1 overflow-x-auto overflow-y-visible truncate p-1 space-x-1">
+                <TabsTrigger value="sheets" className="h-9">
+                  Sheets
+                </TabsTrigger>
+                <TabsTrigger value="packages" className="h-9">
+                  Packages
+                </TabsTrigger>
+                <TabsTrigger value="reviews" className="h-9">
+                  Reviews
+                </TabsTrigger>
+                <TabsTrigger value="posts" className="h-9">
+                  Posts
+                </TabsTrigger>
+              </div>
+              <ScrollBar orientation="horizontal" />
+            </ScrollArea>
+            <div className="py-1 pr-1 flex-1 ">
+              <TabsTrigger
+                value="search"
+                className="w-full min-w-[100px] p-0 self-stretch"
+              >
+                <Input placeholder="Search" />
+              </TabsTrigger>
+            </div>
           </TabsList>
           <TabsContent value="sheets">Sheets</TabsContent>
           <TabsContent value="packages">Packages</TabsContent>
           <TabsContent value="reviews">Reviews</TabsContent>
+          <TabsContent value="posts">Posts</TabsContent>
+          <TabsContent value="search">Search anything</TabsContent>
         </Tabs>
         {/* warning dialog */}
         <Dialog

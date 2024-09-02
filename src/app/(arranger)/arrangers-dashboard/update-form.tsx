@@ -112,6 +112,8 @@ export default function UpdateForm({
           render={({ field }) => (
             <FormItem className="flex-1 flex flex-col items-center gap-4 w-full relative aspect-square">
               <Image
+                placeholder="blur"
+                blurDataURL="/favicon.ico"
                 quality={100}
                 src={field.value ?? "/favicon.ico"}
                 fill

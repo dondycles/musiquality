@@ -9,7 +9,12 @@ export default function BrandedText({
   className?: ClassNameValue;
 }) {
   return (
-    <span className={cn("font-gloock font-black text-4xl", className)}>
+    <span
+      className={cn(
+        "font-gloock font-black text-2xl sm:text-3xl md:text-4xl",
+        className
+      )}
+    >
       {text}
     </span>
   );

@@ -31,6 +31,7 @@ import { createClient } from "@/utils/supabase/client";
 import { MdLibraryBooks } from "react-icons/md";
 import Image from "next/image";
 import BrandedText from "./branded-text";
+import { Skeleton } from "./ui/skeleton";
 export default function Nav() {
   const queryClient = useQueryClient();
   const pathname = usePathname();
@@ -73,7 +74,9 @@ export default function Nav() {
             </SheetHeader>
           </SheetContent>
         </Sheet>
-        {user?.success ? (
+        {userLoading ? (
+          <Skeleton className="size-9" />
+        ) : user?.success ? (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button
@@ -113,13 +116,15 @@ export default function Nav() {
             </DropdownMenuContent>
           </DropdownMenu>
         ) : (
-          <Button asChild>
-            {pathname === "/login" ? (
-              <Link href={"/signup"}>Sign Up</Link>
-            ) : (
-              <Link href={"/login"}>Log In</Link>
-            )}
-          </Button>
+          <>
+            <Button asChild>
+              {pathname === "/login" ? (
+                <Link href={"/signup"}>Sign Up</Link>
+              ) : (
+                <Link href={"/login"}>Log In</Link>
+              )}
+            </Button>
+          </>
         )}
       </nav>
     </header>
