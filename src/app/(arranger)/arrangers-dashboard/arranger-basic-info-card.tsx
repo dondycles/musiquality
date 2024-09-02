@@ -159,8 +159,8 @@ export default function ArrangerBasicInfoCard() {
               </DialogContent>
             </Dialog>
 
-            <ScrollArea>
-              <div className="flex-1 overflow-x-auto overflow-y-visible truncate p-1 space-x-1">
+            <ScrollArea className="px-1 flex-1">
+              <div className="w-full flex overflow-x-auto overflow-y-visible truncate py-1 space-x-1">
                 <TabsTrigger value="sheets" className="h-9">
                   Sheets
                 </TabsTrigger>
@@ -173,17 +173,15 @@ export default function ArrangerBasicInfoCard() {
                 <TabsTrigger value="posts" className="h-9">
                   Posts
                 </TabsTrigger>
+                <TabsTrigger
+                  className="p-0 flex-1 max-w-[300px] sm:max-w-full  min-w-[200px]"
+                  value="search"
+                >
+                  <Input placeholder="Search" className="w-full" />
+                </TabsTrigger>
               </div>
               <ScrollBar orientation="horizontal" />
             </ScrollArea>
-            <div className="py-1 pr-1 flex-1 ">
-              <TabsTrigger
-                value="search"
-                className="w-full min-w-[100px] p-0 self-stretch"
-              >
-                <Input placeholder="Search" />
-              </TabsTrigger>
-            </div>
           </TabsList>
           <TabsContent value="sheets">Sheets</TabsContent>
           <TabsContent value="packages">Packages</TabsContent>
