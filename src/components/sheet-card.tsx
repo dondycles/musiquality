@@ -19,7 +19,7 @@ export default function SheetCard({
   };
 }) {
   return (
-    <Card className="shadow-none overflow-hidden bg-muted w-[244px] flex flex-col gap-4">
+    <Card className="shadow-none overflow-hidden bg-muted w-[244px] flex flex-col gap-4 h-full">
       <Link href={"/sheet/" + sheet.id}>
         <CardContent className="p-0 m-0">
           <SheetThumbnail
@@ -28,7 +28,7 @@ export default function SheetCard({
           />
         </CardContent>
       </Link>
-      <CardFooter className="flex flex-col gap-2 items-start">
+      <CardFooter className="flex flex-col gap-2 items-start h-full">
         <div className="grid grid-cols-[16px,1fr] gap-1">
           <ArrangerAvatar url={sheet.users?.arranger_metadata[0].avatar_url} />
           <Link
@@ -38,16 +38,19 @@ export default function SheetCard({
             {sheet.users?.arranger_metadata[0].display_name}
           </Link>
         </div>
-        <div className="flex flex-col">
+        <div className="flex flex-col flex-1">
           <Link href={"/sheet/" + sheet.id} className="font-semibold">
             {sheet.title}
           </Link>
           <SheetOGArtistText
             artists={sheet.original_artist as original_artist}
           />
-          <BrandedText text={"$" + String(sheet.price)} />
+          <BrandedText
+            text={"$" + String(sheet.price)}
+            className="mt-auto mb-0"
+          />
         </div>
-        <div className="flex gap-4 w-full">
+        <div className="flex gap-4 w-full mb-0 mt-auto">
           <Button className="flex-1 ">Buy</Button>
           <Button size={"icon"} variant={"outline"}>
             <FiShoppingCart />
