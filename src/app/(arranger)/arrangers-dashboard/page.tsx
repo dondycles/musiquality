@@ -4,6 +4,8 @@ import { ChevronLeftIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import ArrangerBasicInfoCard from "./arranger-basic-info-card";
+import TabsSection from "./tabs-section";
+import Dashboard from "./dashboard";
 
 export default async function ArrangersDashboard() {
   const supabase = createClient();
@@ -20,7 +22,7 @@ export default async function ArrangersDashboard() {
           <BrandedText text="Arranger's Dashboard" />
         </h1>
       </header>
-      <ArrangerBasicInfoCard />
+      <Dashboard />
     </div>
   );
 }

@@ -27,7 +27,7 @@ export default async function ArrangerPage({
   const { data } = await supabase
     .from("arranger_metadata")
     .select("*")
-    .eq("id", params.id)
+    .eq("user_id", params.id)
     .single();
   return <div>{JSON.stringify(data)}</div>;
 }

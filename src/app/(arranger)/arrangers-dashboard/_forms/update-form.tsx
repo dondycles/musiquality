@@ -18,10 +18,8 @@ import Image from "next/image";
 import { UploadButton } from "@/utils/uploadthing";
 import { PlusIcon } from "@radix-ui/react-icons";
 import { useEffect } from "react";
-import { User } from "@supabase/supabase-js";
-import { Database } from "@/../database.types";
 import { arrangersMetadataSchema } from "@/types/arrangers-metadata";
-
+import { type UserData } from "@/types/user-data";
 export default function UpdateForm({
   userData,
   closeForm,
@@ -30,10 +28,7 @@ export default function UpdateForm({
   changes,
   setChanges,
 }: {
-  userData: User &
-    Database["public"]["Tables"]["users"]["Row"] & {
-      arranger_metadata: Database["public"]["Tables"]["arranger_metadata"]["Row"][];
-    };
+  userData: UserData;
   closeForm: () => void;
   setImageUploading: (state: boolean) => void;
   imageUploading: boolean;

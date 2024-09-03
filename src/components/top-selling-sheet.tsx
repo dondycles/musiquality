@@ -8,10 +8,10 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "./ui/carousel";
-import SheetCard from "./sheet-cart";
 import { useQuery } from "@tanstack/react-query";
 import getsheets from "@/actions/getsheets";
 import { Skeleton } from "./ui/skeleton";
+import SheetCard from "./sheet-card";
 
 export default function TopSellingSheets() {
   const { data: sheets, isLoading: loadingSheets } = useQuery({
@@ -36,15 +36,15 @@ export default function TopSellingSheets() {
         <Carousel
           opts={{
             align: "start",
-            skipSnaps: true,
-            slidesToScroll: 3,
+            slidesToScroll: 1,
+            dragFree: true,
           }}
-          className="basis-1"
         >
           <CarouselContent>
             {sheets?.map((sheet) => (
-              <CarouselItem key={sheet.id} className="basis-1/1 max-w-72">
+              <CarouselItem key={sheet.id} className="basis-[1/1]">
                 <SheetCard sheet={sheet} />
+                {sheet.users?.arranger_metadata[0].avatar_url}
               </CarouselItem>
             ))}
           </CarouselContent>
