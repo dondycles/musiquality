@@ -44,7 +44,6 @@ export default function TopSellingSheets() {
             {sheets?.map((sheet) => (
               <CarouselItem key={sheet.id} className="basis-[1/1]">
                 <SheetCard sheet={sheet} />
-                {sheet.users?.arranger_metadata[0].avatar_url}
               </CarouselItem>
             ))}
           </CarouselContent>

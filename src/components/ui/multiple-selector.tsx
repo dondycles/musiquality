@@ -19,6 +19,7 @@ import React, {
   useContext,
   useState,
 } from "react";
+import { ScrollArea, ScrollBar } from "./scroll-area";
 
 interface MultiSelectorProps
   extends React.ComponentPropsWithoutRef<typeof CommandPrimitive> {
@@ -231,7 +232,7 @@ const MultiSelectorTrigger = forwardRef<
     <div
       ref={ref}
       className={cn(
-        "flex flex-wrap items-center gap-1 p-1 ring-1 ring-muted rounded-lg bg-background",
+        "flex items-center gap-1 p-1 ring-1 ring-muted rounded-lg bg-background",
         {
           "ring-1 focus-within:ring-ring": activeIndex === -1,
         },
@@ -239,30 +240,37 @@ const MultiSelectorTrigger = forwardRef<
       )}
       {...props}
     >
-      {value.map((item, index) => (
-        <Badge
-          key={item}
-          className={cn(
-            "px-1 rounded flex items-center gap-1",
-            activeIndex === index && "ring-2 ring-muted-foreground "
-          )}
-          variant={"secondary"}
-        >
-          <span className="text-xs font-normal">{item}</span>
-          <button
-            aria-label={`Remove ${item} option`}
-            aria-roledescription="button to remove option"
-            type="button"
-            onMouseDown={mousePreventDefault}
-            onClick={() => onValueChange(item)}
-          >
-            <span className="sr-only">Remove {item} option</span>
-            <RemoveIcon className="h-4 w-4 hover:stroke-destructive" />
-          </button>
-        </Badge>
-      ))}
-      {children}
-      <CaretSortIcon className="h-4 w-4 opacity-50 mr-0 ml-auto" />
+      <ScrollArea>
+        <div className="flex flex-row gap-1">
+          {value.map((item, index) => (
+            <Badge
+              key={item}
+              className={cn(
+                "px-1 w-fit rounded flex items-center gap-1",
+                activeIndex === index && "ring-2 ring-muted-foreground "
+              )}
+              variant={"secondary"}
+            >
+              <span className="text-xs font-normal">{item}</span>
+              <button
+                aria-label={`Remove ${item} option`}
+                aria-roledescription="button to remove option"
+                type="button"
+                onMouseDown={mousePreventDefault}
+                onClick={() => onValueChange(item)}
+              >
+                <span className="sr-only">Remove {item} option</span>
+                <RemoveIcon className="h-4 w-4 hover:stroke-destructive" />
+              </button>
+            </Badge>
+          ))}
+          {children}
+        </div>
+
+        <ScrollBar orientation="horizontal" />
+      </ScrollArea>
+
+      <CaretSortIcon className="h-4 w-4 opacity-50 mr-0 ml-auto shrink-0" />
     </div>
   );
 });

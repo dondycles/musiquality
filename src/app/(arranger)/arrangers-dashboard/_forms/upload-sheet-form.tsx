@@ -107,7 +107,7 @@ export default function UploadSheetForm({ arranger }: { arranger: string }) {
         onSubmit={uploadSheetForm.handleSubmit(_uploadSheet)}
         className="flex flex-col gap-1"
       >
-        <div className="flex gap-1">
+        <div className="flex flex-col sm:flex-row gap-1">
           <FormField
             control={uploadSheetForm.control}
             name="sheet_url"
@@ -154,7 +154,6 @@ export default function UploadSheetForm({ arranger }: { arranger: string }) {
               </FormItem>
             )}
           />
-
           <div className="flex flex-col gap-1 flex-1">
             <FormField
               control={uploadSheetForm.control}
@@ -231,7 +230,6 @@ export default function UploadSheetForm({ arranger }: { arranger: string }) {
                 );
               }}
             />
-
             <FormField
               control={uploadSheetForm.control}
               name="instrument"
@@ -243,10 +241,10 @@ export default function UploadSheetForm({ arranger }: { arranger: string }) {
                     loop
                     className="m-0 p-0  space-y-0"
                   >
-                    <MultiSelectorTrigger className="border w-full px-3 rounded-md h-9">
+                    <MultiSelectorTrigger className="border px-3 rounded-md h-9">
                       <MultiSelectorInput
-                        className="text-sm p-0 m-0 "
-                        placeholder="Instruments used"
+                        className="text-sm p-0 m-0 w-fit flex-1"
+                        placeholder="Instruments"
                       />
                     </MultiSelectorTrigger>
                     <MultiSelectorContent>
