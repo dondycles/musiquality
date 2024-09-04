@@ -1,23 +1,14 @@
-import { FiShoppingCart } from "react-icons/fi";
 import { Button } from "./ui/button";
 import { Card, CardContent, CardFooter } from "./ui/card";
-import { Database } from "../../database.types";
 import Link from "next/link";
 import SheetOGArtistText, { original_artist } from "./sheet-og-artists-text";
 import SheetThumbnail from "./sheet-thumbnail";
-import BrandedText from "./branded-text";
 import ArrangerAvatar from "./arranger-avatar";
+import { SheetData } from "@/types/sheet-data";
+import AddToCartBtn from "./add-to-cart-btn";
+import CurrencyText from "./currency-text";
 
-export default function SheetCard({
-  sheet,
-}: {
-  sheet: Database["public"]["Tables"]["sheets"]["Row"] & {
-    users: {
-      id: Database["public"]["Tables"]["users"]["Row"]["id"];
-      arranger_metadata: Database["public"]["Tables"]["arranger_metadata"]["Row"][];
-    } | null;
-  };
-}) {
+export default function SheetCard({ sheet }: { sheet: SheetData }) {
   return (
     <Card className="shadow-none overflow-hidden bg-muted w-[244px] flex flex-col gap-4 h-full">
       <Link href={"/sheet/" + sheet.id}>
@@ -45,16 +36,11 @@ export default function SheetCard({
           <SheetOGArtistText
             artists={sheet.original_artist as original_artist}
           />
-          <BrandedText
-            text={"$" + String(sheet.price)}
-            className="mt-auto mb-0"
-          />
+          <CurrencyText amount={sheet.price} className="mt-auto mb-0" />
         </div>
         <div className="flex gap-4 w-full mb-0 mt-auto">
           <Button className="flex-1 ">Buy</Button>
-          <Button size={"icon"} variant={"outline"}>
-            <FiShoppingCart />
-          </Button>
+          <AddToCartBtn sheet={sheet} />
         </div>
       </CardFooter>
     </Card>

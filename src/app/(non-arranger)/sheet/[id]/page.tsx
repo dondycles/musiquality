@@ -1,4 +1,3 @@
-import { createClient } from "@/utils/supabase/server";
 import SheetOGArtistText, {
   original_artist,
 } from "@/components/sheet-og-artists-text";
@@ -10,21 +9,18 @@ import SheetThumbnail from "@/components/sheet-thumbnail";
 import { Check, X } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
-import { FiShoppingCart } from "react-icons/fi";
 import ArrangerAvatar from "@/components/arranger-avatar";
 import { Metadata } from "next";
+import getSheet from "@/actions/get-sheet";
+import CurrencyText from "@/components/currency-text";
+import AddToCartBtn from "@/components/add-to-cart-btn";
 
 export async function generateMetadata({
   params,
 }: {
   params: { id: string };
 }): Promise<Metadata> {
-  const supabase = createClient();
-  const { data } = await supabase
-    .from("sheets")
-    .select("*, users(id, arranger_metadata(*))")
-    .eq("id", params.id)
-    .single();
+  const { data } = await getSheet(params.id);
   return {
     title: `${data?.title} - Arranged by ${data?.users?.arranger_metadata[0].display_name}`,
     openGraph: {
@@ -41,12 +37,7 @@ export async function generateMetadata({
 }
 
 export default async function Sheet({ params }: { params: { id: string } }) {
-  const supabase = createClient();
-  const { data } = await supabase
-    .from("sheets")
-    .select("*, users(id, arranger_metadata(*))")
-    .eq("id", params.id)
-    .single();
+  const { data } = await getSheet(params.id);
 
   if (data)
     return (
@@ -98,14 +89,9 @@ export default async function Sheet({ params }: { params: { id: string } }) {
 
               <Separator className="my-2" />
               <div className="flex gap-2 items-center justify-center sm:justify-start">
-                <BrandedText
-                  className="text-primary"
-                  text={String("$" + data.price)}
-                />
+                <CurrencyText className="text-primary" amount={data.price} />
                 <Button>Buy</Button>
-                <Button variant={"outline"} size={"icon"}>
-                  <FiShoppingCart />
-                </Button>
+                <AddToCartBtn sheet={data} />
               </div>
             </div>
           </div>

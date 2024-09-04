@@ -11,7 +11,6 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import updateUser from "@/actions/update-user";
 import { useToast } from "@/components/ui/use-toast";
 import { useQueryClient } from "@tanstack/react-query";
 import Image from "next/image";
@@ -20,6 +19,7 @@ import { PlusIcon } from "@radix-ui/react-icons";
 import { useEffect } from "react";
 import { arrangersMetadataSchema } from "@/types/arrangers-metadata";
 import { type UserData } from "@/types/user-data";
+import updateArranger from "@/actions/update-arranger";
 export default function UpdateForm({
   userData,
   closeForm,
@@ -63,7 +63,7 @@ export default function UpdateForm({
         variant: "destructive",
         duration: 3000,
       });
-    const { error } = await updateUser(data, userData.id);
+    const { error } = await updateArranger(data, userData.id);
     if (error)
       return updateUserForm.setError("display_name", { message: error });
     toast({

@@ -1,6 +1,6 @@
 "use client";
 
-import getUser from "@/actions/getuser";
+import getUser from "@/actions/get-user";
 import { useQuery } from "@tanstack/react-query";
 import ArrangerBasicInfoCard from "./arranger-basic-info-card";
 import TabsSection from "./tabs-section";

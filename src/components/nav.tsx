@@ -1,18 +1,11 @@
 "use client";
 import Link from "next/link";
 import { Button } from "./ui/button";
-import { FiLogOut, FiMusic, FiShoppingCart } from "react-icons/fi";
+import { FiLogOut, FiMusic } from "react-icons/fi";
 import { usePathname } from "next/navigation";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import getUser from "@/actions/getuser";
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet";
+import getUser from "@/actions/get-user";
+
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -28,6 +21,7 @@ import Image from "next/image";
 import BrandedText from "./branded-text";
 import { Skeleton } from "./ui/skeleton";
 import { useEffect, useState } from "react";
+import SideCart from "./side-cart";
 export default function Nav() {
   const queryClient = useQueryClient();
   const pathname = usePathname();
@@ -59,24 +53,7 @@ export default function Nav() {
         <BrandedText text="MusiQuality" />
       </Link>
       <nav className="flex flex-row gap-4">
-        <Sheet>
-          <SheetTrigger asChild>
-            <Button variant={"outline"} size={"icon"}>
-              <FiShoppingCart />
-            </Button>
-          </SheetTrigger>
-          <SheetContent>
-            <SheetHeader>
-              <SheetTitle className="flex items-center gap-2">
-                <FiShoppingCart />
-                Your cart
-              </SheetTitle>
-              <SheetDescription>
-                Make changes to your profile here. Click save when youre done.
-              </SheetDescription>
-            </SheetHeader>
-          </SheetContent>
-        </Sheet>
+        <SideCart />
         {userLoading ? (
           <Skeleton className="size-9" />
         ) : user?.success ? (
