@@ -37,7 +37,7 @@ export default function ArrangerBasicInfoCard({
     <div className="flex flex-col gap-4 items-center">
       <div className="flex flex-col gap-4 w-full">
         <div className="flex flex-col justify-center gap-4 items-center mx-auto">
-          <Link href={"/arranger/" + userData.arranger_metadata[0].id}>
+          <Link href={"/arranger/" + userData.arranger_metadata.id}>
             <div className="relative rounded-full size-32">
               <Image
                 placeholder="blur"
@@ -45,10 +45,10 @@ export default function ArrangerBasicInfoCard({
                 quality={100}
                 priority
                 src={
-                  userData.arranger_metadata[0]?.avatar_url ?? "/favicon.ico"
+                  userData.arranger_metadata?.avatar_url ?? "/favicon.ico"
                 }
                 fill
-                alt={userData.arranger_metadata[0]?.display_name ?? "User PFP"}
+                alt={userData.arranger_metadata?.display_name ?? "User PFP"}
                 className="rounded-md object-cover object-top "
               />
             </div>
@@ -97,10 +97,10 @@ export default function ArrangerBasicInfoCard({
           <div className="flex gap-4">
             <div className="text-center">
               <p className="font-semibold text-lg">
-                {userData.arranger_metadata[0]?.display_name}
+                {userData.arranger_metadata?.display_name}
               </p>
               <p className="text-muted-foreground text-sm">
-                {userData.arranger_metadata[0]?.description}
+                {userData.arranger_metadata?.description}
               </p>
             </div>
           </div>
