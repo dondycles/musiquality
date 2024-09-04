@@ -76,6 +76,9 @@ const config = withUt({
         gloock: ["var(--font-gloock)"],
         poppins: ["var(--font-poppins)"],
       },
+      screens: {
+        xs: "420px",
+      },
     },
   },
   plugins: [require("tailwindcss-animate")],

@@ -12,8 +12,8 @@ export default async function SheetDownloadLink({
   if (success)
     return (
       <Button asChild>
-        <Link href={success} download={""}>
-          Download
+        <Link href={success} download={"sheet.pdf"}>
+          View
         </Link>
       </Button>
     );

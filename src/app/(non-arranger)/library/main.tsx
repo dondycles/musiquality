@@ -20,22 +20,9 @@ export default function LibraryMain({ userId }: { userId: string | null }) {
   if (user?.success)
     return (
       <div className="flex flex-col gap-4">
-        {user.success.library.map((item) => {
-          return (
-            <div key={item.id}>
-              <p>{item.sheets?.title}</p>
-              <Suspense fallback={<Loader className="animate-spin" />}>
-                <SheetDownloadLink
-                  key={item.sheets?.id!}
-                  sheetId={item.sheets?.id!}
-                />
-              </Suspense>
-            </div>
-          );
-        })}
-        {/* <LibrarySheets userData={user?.success} /> */}
+        <LibrarySheets userData={user?.success} />
         <Separator />
-        {/* <Transactions userData={user?.success} /> */}
+        <Transactions userData={user?.success} />
       </div>
     );
 }

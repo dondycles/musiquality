@@ -11,7 +11,6 @@ export default async function getUser() {
     .select("*, arranger_metadata(*), library(*, sheets(*)), transactions(*)")
     .eq("id", authData.id)
     .single();
-
   if (dbError) return { error: dbError.message, success: null };
   if (!dbData) return { error: "User not found in database!", success: null };
   console.log({
