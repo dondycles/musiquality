@@ -12,6 +12,33 @@ import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import { FiShoppingCart } from "react-icons/fi";
 import ArrangerAvatar from "@/components/arranger-avatar";
+import { Metadata } from "next";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: { id: string };
+}): Promise<Metadata> {
+  const supabase = createClient();
+  const { data } = await supabase
+    .from("sheets")
+    .select("*, users(id, arranger_metadata(*))")
+    .eq("id", params.id)
+    .single();
+  return {
+    title: `${data?.title} - Arranged by ${data?.users?.arranger_metadata[0].display_name}`,
+    openGraph: {
+      title: `${data?.title} - Arranged by ${data?.users?.arranger_metadata[0].display_name}`,
+      images: data?.thumbnail_url,
+    },
+    authors: [
+      {
+        name: data?.users?.arranger_metadata[0].display_name,
+        url: `https://musiquality.vercel.app/arranger/${data?.users?.arranger_metadata[0].user_id}}`,
+      },
+    ],
+  };
+}
 
 export default async function Sheet({ params }: { params: { id: string } }) {
   const supabase = createClient();

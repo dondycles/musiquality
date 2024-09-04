@@ -15,11 +15,11 @@ import SheetCard from "./sheet-card";
 
 export default function TopSellingSheets() {
   const { data: sheets, isLoading: loadingSheets } = useQuery({
-    queryKey: ["sheets"],
     queryFn: async () => {
       const { data } = await getsheets();
       return data;
     },
+    queryKey: ["sheets"],
   });
   if (loadingSheets) return <Skeleton className="h-32 w-full" />;
   return (

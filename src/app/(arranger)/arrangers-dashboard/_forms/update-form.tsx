@@ -71,7 +71,7 @@ export default function UpdateForm({
       description: "successfully updated!",
       duration: 3000,
     });
-    queryClient.invalidateQueries({ queryKey: ["user"] });
+    queryClient.invalidateQueries({ queryKey: ["user", userData.id] });
     closeForm();
   };
   useEffect(() => {

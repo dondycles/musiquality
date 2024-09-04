@@ -1,12 +1,7 @@
 "use client";
 import Link from "next/link";
 import { Button } from "./ui/button";
-import {
-  FiDollarSign,
-  FiLogOut,
-  FiMusic,
-  FiShoppingCart,
-} from "react-icons/fi";
+import { FiLogOut, FiMusic, FiShoppingCart } from "react-icons/fi";
 import { usePathname } from "next/navigation";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import getUser from "@/actions/getuser";
@@ -32,24 +27,32 @@ import { MdLibraryBooks } from "react-icons/md";
 import Image from "next/image";
 import BrandedText from "./branded-text";
 import { Skeleton } from "./ui/skeleton";
+import { useEffect, useState } from "react";
 export default function Nav() {
   const queryClient = useQueryClient();
   const pathname = usePathname();
   const supabase = createClient();
-  const {
-    data: user,
-    error: userError,
-    isLoading: userLoading,
-    refetch: refetchUser,
-  } = useQuery({
-    queryKey: ["user"],
+  const [userId, setUserId] = useState<string | null>(null);
+  const { data: user, isLoading: userLoading } = useQuery({
+    queryKey: ["user", userId],
     queryFn: async () => await getUser(),
+    enabled: userId !== null,
   });
   async function logOut() {
     await supabase.auth.signOut();
     queryClient.clear();
     window.location.reload();
   }
+
+  useEffect(() => {
+    async function _setUserId() {
+      const id = (await supabase.auth.getUser()).data.user?.id;
+      if (!id) return setUserId(null);
+      setUserId(id);
+    }
+    _setUserId();
+  }, [supabase]);
+
   return (
     <header className="fixed top-0 left-0 w-full border-b flex justify-between items-center p-4 backdrop-blur bg-background/95 z-10">
       <Link href={"/"}>

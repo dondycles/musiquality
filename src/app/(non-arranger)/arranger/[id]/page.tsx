@@ -10,11 +10,15 @@ export async function generateMetadata({
   const { data } = await supabase
     .from("arranger_metadata")
     .select("*")
-    .eq("id", params.id)
+    .eq("user_id", params.id)
     .single();
 
   return {
     title: data?.display_name,
+    openGraph: {
+      title: data?.display_name,
+      images: data?.avatar_url ?? "https://musiquality.vercel.app/favicon.ico",
+    },
   };
 }
 
