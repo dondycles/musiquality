@@ -48,9 +48,9 @@ export default function UpdateForm({
   const updateUserForm = useForm<z.infer<typeof arrangersMetadataSchema>>({
     resolver: zodResolver(arrangersMetadataSchema),
     defaultValues: {
-      display_name: userData?.arranger_metadata[0]?.display_name,
-      avatar_url: userData?.arranger_metadata[0]?.avatar_url ?? "/favicon.ico",
-      description: userData?.arranger_metadata[0]?.description!,
+      display_name: userData?.arranger_metadata?.display_name,
+      avatar_url: userData?.arranger_metadata?.avatar_url ?? "/favicon.ico",
+      description: userData?.arranger_metadata?.description!,
     },
   });
   const handleUpdate = async (
@@ -77,7 +77,7 @@ export default function UpdateForm({
   useEffect(() => {
     if (
       updateUserForm.watch("display_name") !==
-      userData.arranger_metadata[0]?.display_name
+      userData.arranger_metadata?.display_name
     ) {
       setChanges({ ...changes, name: true });
     } else {
@@ -85,7 +85,7 @@ export default function UpdateForm({
     }
     if (
       updateUserForm.watch("description") !==
-      userData.arranger_metadata[0]?.description
+      userData.arranger_metadata?.description
     ) {
       setChanges({ ...changes, description: true });
     } else {
@@ -93,9 +93,9 @@ export default function UpdateForm({
     }
   }, [
     updateUserForm.watch("display_name"),
-    userData.arranger_metadata[0]?.display_name,
+    userData.arranger_metadata?.display_name,
     updateUserForm.watch("description"),
-    userData.arranger_metadata[0]?.description,
+    userData.arranger_metadata?.description,
   ]);
   return (
     <Form {...updateUserForm}>
@@ -114,7 +114,7 @@ export default function UpdateForm({
                 quality={100}
                 src={field.value ?? "/favicon.ico"}
                 fill
-                alt={userData.arranger_metadata[0]?.avatar_url ?? "User PFP"}
+                alt={userData.arranger_metadata?.avatar_url ?? "User PFP"}
                 className="rounded-md border object-cover object-center"
               />
               <UploadButton
@@ -165,7 +165,7 @@ export default function UpdateForm({
             <FormItem className="flex-1">
               <FormControl>
                 <Input
-                  placeholder={userData.arranger_metadata[0]?.display_name}
+                  placeholder={userData.arranger_metadata?.display_name}
                   {...field}
                 />
               </FormControl>
@@ -182,9 +182,9 @@ export default function UpdateForm({
             <FormItem>
               <Input
                 placeholder={
-                  !userData.arranger_metadata[0]?.description
+                  !userData.arranger_metadata?.description
                     ? "Short description about you"
-                    : userData.arranger_metadata[0]?.description
+                    : userData.arranger_metadata?.description
                 }
                 {...field}
               />
