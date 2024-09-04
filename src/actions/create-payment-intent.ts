@@ -22,10 +22,5 @@ export default async function createPaymentIntent(
 
   await saveTransaction(paymentIntent.id, sheets, amount);
 
-  return {
-    success: {
-      paymentIntentID: paymentIntent.id,
-      clientSecretID: paymentIntent.client_secret,
-    },
-  };
+  return paymentIntent;
 }

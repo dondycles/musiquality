@@ -24,8 +24,8 @@ export default function Transactions({ userData }: { userData: UserData }) {
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>No.</TableHead>
             <TableHead>Payment ID</TableHead>
+            <TableHead>Status</TableHead>
             <TableHead>Total Price</TableHead>
             <TableHead>Date</TableHead>
           </TableRow>
@@ -37,8 +37,8 @@ export default function Transactions({ userData }: { userData: UserData }) {
                 {/* {(trans.metadata as metadata[]).map((sheet: metadata) => {
                 return <span key={sheet.id}>{sheet.id}</span>;
               })} */}
-                <TableCell>{i + 1}</TableCell>
                 <TableCell>{trans.payment_intent_id}</TableCell>
+                <TableCell>{trans.status}</TableCell>
                 <TableCell>
                   <CurrencyText
                     branded={false}

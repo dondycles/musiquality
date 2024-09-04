@@ -1,6 +1,5 @@
 "use client";
 
-import { FiShoppingCart } from "react-icons/fi";
 import { Button } from "./ui/button";
 import { SheetData } from "@/types/sheet-data";
 import { useCartStore } from "../../store";
@@ -8,7 +7,13 @@ import { useQuery } from "@tanstack/react-query";
 import { useEffect, useState } from "react";
 import { createClient } from "@/utils/supabase/client";
 import getUser from "@/actions/get-user";
-import { Check } from "lucide-react";
+import {
+  Check,
+  ClipboardCheck,
+  ListCheck,
+  ShoppingCart,
+  X,
+} from "lucide-react";
 import {
   Tooltip,
   TooltipContent,
@@ -39,10 +44,10 @@ export default function AddToCartBtn({
   });
 
   const isBought = Boolean(
-    user?.success?.library
-      .map((sheet) => sheet.sheet)
-      .find((id) => id === sheet.id)
+    user?.success?.library.find((item) => item.sheets?.id === sheet.id)
   );
+
+  const isCarted = Boolean(cart.cart.find((item) => item.id === sheet.id));
 
   useEffect(() => {
     async function _setUserId() {
@@ -62,12 +67,7 @@ export default function AddToCartBtn({
       )}
     >
       {isBought ? (
-        <del>
-          <CurrencyText
-            className={cn("flex-1 w-full", textClassName)}
-            amount={sheet.price}
-          />
-        </del>
+        <p className="text-xs text-muted-foreground">Purchased</p>
       ) : (
         <CurrencyText
           className={cn("flex-1 w-full", textClassName)}
@@ -81,20 +81,31 @@ export default function AddToCartBtn({
             <Button
               onClick={() => {
                 if (isBought) return;
+                if (isCarted) return cart.removeToCart(sheet);
                 cart.addToCart(sheet);
               }}
               size={"icon"}
-              variant={isBought ? "ghost" : "default"}
+              variant={
+                isCarted ? "destructive" : isBought ? "ghost" : "default"
+              }
             >
-              {isBought ? (
+              {isCarted ? (
+                <X size={16} />
+              ) : isBought ? (
                 <Check className="text-green-500" />
               ) : (
-                <FiShoppingCart />
+                <ShoppingCart size={16} />
               )}
             </Button>
           </TooltipTrigger>
           <TooltipContent>
-            <p>{isBought ? "Purchased" : "Add to cart"}</p>
+            <p>
+              {isCarted
+                ? "Remove from cart"
+                : isBought
+                ? "Purchased"
+                : "Add to cart"}
+            </p>
           </TooltipContent>
         </Tooltip>
       </TooltipProvider>

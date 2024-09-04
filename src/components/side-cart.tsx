@@ -1,6 +1,8 @@
+"use client";
 import { FiShoppingCart } from "react-icons/fi";
 import {
   Sheet,
+  SheetClose,
   SheetContent,
   SheetDescription,
   SheetHeader,
@@ -22,6 +24,7 @@ import { ScrollArea } from "./ui/scroll-area";
 import { MdPayment } from "react-icons/md";
 import Link from "next/link";
 import { Progress } from "./ui/progress";
+import { useQueryClient } from "@tanstack/react-query";
 const stripe = getStripe();
 export default function SideCart({
   user,
@@ -29,8 +32,11 @@ export default function SideCart({
   user: UserData | null | undefined;
 }) {
   var _ = require("lodash");
+  const queryClient = useQueryClient();
   const cart = useCartStore();
-  const total = _.sum(cart.cart.map((sheet) => sheet.price)) * 100;
+  const total = cart.cart.reduce((acc, item) => {
+    return acc + item.price;
+  }, 0);
   const [cartState, setCartState] = useState<
     "cart" | "checkout" | "success" | "error"
   >("cart");
@@ -123,7 +129,7 @@ export default function SideCart({
                             text={sheet.title}
                           />
                           <p className="text-muted-foreground text-xs  line-clamp-1">
-                            {sheet.users?.arranger_metadata[0].display_name}
+                            {sheet.users?.arranger_metadata?.display_name}
                           </p>
                           <CurrencyText
                             className="mt-auto mb-0 text-xl sm:text-2xl md:text-2xl "
@@ -146,7 +152,7 @@ export default function SideCart({
               <div className="mb-0 mt-auto flex flex-col gap-4 ">
                 <div>
                   <p className="text-muted-foreground text-sm"> Total price:</p>{" "}
-                  <CurrencyText amount={total / 100} />
+                  <CurrencyText amount={total} />
                 </div>
                 <Button
                   disabled={total === 0}
@@ -169,7 +175,7 @@ export default function SideCart({
                     theme: "flat",
                     labels: "floating",
                   },
-                  amount: total,
+                  amount: total * 100,
                   fonts: [
                     {
                       cssSrc:
@@ -186,11 +192,12 @@ export default function SideCart({
                     price: sheet.price,
                   }))}
                   user={user}
-                  onFinish={(state) => {
-                    if (state === "success") {
-                      cart.resetCart();
-                    }
-                    setCartState(state);
+                  onSuccess={() => {
+                    cart.resetCart();
+                    queryClient.invalidateQueries({
+                      queryKey: ["user", user?.id],
+                    });
+                    setCartState("success");
                   }}
                 />
               </Elements>
@@ -201,9 +208,14 @@ export default function SideCart({
             <div className="flex flex-col gap-4 items-center justify-center flex-1">
               <CheckCircle className="size-12 mx-auto" />
               <p>Thank you for purchasing!</p>
-              <Button asChild>
-                <Link href={"/library"}>View library</Link>
-              </Button>
+
+              <Link href={"/library"}>
+                <SheetClose>
+                  <Button onClick={() => setCartState("cart")}>
+                    View Library
+                  </Button>
+                </SheetClose>
+              </Link>
               <Button onClick={() => setCartState("cart")}>Back to cart</Button>
             </div>
           )}

@@ -4,9 +4,11 @@ import SheetOGArtistText, {
   original_artist,
 } from "@/components/sheet-og-artists-text";
 import SheetThumbnail from "@/components/sheet-thumbnail";
+import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { UserData } from "@/types/user-data";
 import { Loader } from "lucide-react";
+import Link from "next/link";
 import { Suspense } from "react";
 
 export default function LibrarySheets({ userData }: { userData: UserData }) {
@@ -19,7 +21,7 @@ export default function LibrarySheets({ userData }: { userData: UserData }) {
         {userData.library.map((item) => {
           return (
             <div
-              key={item.id}
+              key={item.sheets?.id}
               className="flex flex-col border rounded-md p-1 sm:p-4 w-full text-center self-stretch"
             >
               <SheetThumbnail
@@ -35,14 +37,12 @@ export default function LibrarySheets({ userData }: { userData: UserData }) {
                 artists={item.sheets?.original_artist as original_artist}
                 className="text-xs mb-4 line-clamp-1"
               />
-              <Suspense
-                fallback={<Loader className="animate-spin mx-auto size-4" />}
+              <Link
+                href={item.sheets?.sheets_url?.url as string}
+                target="_blank"
               >
-                <SheetDownloadLink
-                  key={item.sheets?.id!}
-                  sheetId={item.sheets?.id!}
-                />
-              </Suspense>
+                <Button className="w-full">View</Button>
+              </Link>
             </div>
           );
         })}

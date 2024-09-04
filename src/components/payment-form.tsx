@@ -13,20 +13,18 @@ import { UserData } from "@/types/user-data";
 import Link from "next/link";
 import CurrencyText from "./currency-text";
 import saveSheetToLibrary from "@/actions/save-sheet-to-library";
-import { useQueryClient } from "@tanstack/react-query";
 
 export default function PaymentForm({
   total,
   sheets,
   user,
-  onFinish,
+  onSuccess,
 }: {
   total: number;
   sheets: Pick<SheetData, "id" | "price">[];
   user: UserData | null | undefined;
-  onFinish: (state: "error" | "success", message: string) => void;
+  onSuccess: () => void;
 }) {
-  const queryClient = useQueryClient();
   const stripe = useStripe();
   const elements = useElements();
   const [isPaying, setIsPaying] = useState(false);
@@ -35,46 +33,40 @@ export default function PaymentForm({
     if (!stripe) return;
     if (!elements) return;
     if (!user) return;
+    if (total <= 0) return;
     setIsPaying(true);
 
-    const { error } = await elements.submit();
+    const { error: elementsError } = await elements.submit();
 
-    if (error) {
+    if (elementsError) {
       setIsPaying(false);
-      onFinish("error", error.message!);
-      return console.log(error);
+      return console.log(elementsError);
     }
 
-    const { success } = await createPaymentIntent(total, sheets);
+    const intent = await createPaymentIntent(total * 100, sheets);
 
-    if (success) {
-      const { error } = await stripe?.confirmPayment({
-        elements,
-        clientSecret: success.clientSecretID!,
-        redirect: "if_required",
-        confirmParams: {
-          receipt_email: user.email,
-          return_url: "http://localhost:3000/payment-success/",
-        },
-      });
-      if (error) {
-        setIsPaying(false);
-        await updateTransaction(success.paymentIntentID, "error");
-        onFinish("error", error.message!);
-        return console.log(error);
-      }
-      await updateTransaction(success.paymentIntentID, "success");
-      for (const sheet of sheets) {
-        await (async () => {
-          await saveSheetToLibrary(sheet.id, success.paymentIntentID);
-        })();
-      }
-    }
-    queryClient.invalidateQueries({
-      queryKey: ["user", user.id],
+    const { error: paymentError } = await stripe?.confirmPayment({
+      elements,
+      clientSecret: intent.client_secret as string,
+      redirect: "if_required",
+      confirmParams: {
+        receipt_email: user.email,
+        return_url: "http://localhost:3000/payment-success/",
+      },
     });
-    onFinish("success", "Done");
+    if (paymentError) {
+      setIsPaying(false);
+      await updateTransaction(intent.id, "error");
+      return console.log(paymentError);
+    }
+    await updateTransaction(intent.id, "success");
+    for (const sheet of sheets) {
+      await (async () => {
+        await saveSheetToLibrary(sheet.id, intent.id);
+      })();
+    }
     setIsPaying(false);
+    onSuccess();
   };
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-3">
@@ -99,7 +91,7 @@ export default function PaymentForm({
                 Pay{" "}
                 <CurrencyText
                   className="ml-2 text-base sm:text-base md:text-base"
-                  amount={total / 100}
+                  amount={total}
                 />
               </>
             )}

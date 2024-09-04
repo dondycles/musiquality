@@ -21,12 +21,12 @@ export default function SheetCard({ sheet }: { sheet: SheetData }) {
       </Link>
       <CardFooter className="flex flex-col gap-2 items-start h-full">
         <div className="grid grid-cols-[16px,1fr] gap-1">
-          <ArrangerAvatar url={sheet.users?.arranger_metadata[0].avatar_url} />
+          <ArrangerAvatar url={sheet.users?.arranger_metadata?.avatar_url} />
           <Link
             href={"/arranger/" + sheet.arranger}
             className="truncate my-auto text-xs text-muted-foreground"
           >
-            {sheet.users?.arranger_metadata[0].display_name}
+            {sheet.users?.arranger_metadata?.display_name}
           </Link>
         </div>
         <div className="flex flex-col flex-1 w-full">

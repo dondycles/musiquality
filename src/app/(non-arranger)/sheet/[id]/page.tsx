@@ -22,15 +22,15 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { data } = await getSheet(params.id);
   return {
-    title: `${data?.title} - Arranged by ${data?.users?.arranger_metadata[0].display_name}`,
+    title: `${data?.title} - Arranged by ${data?.users?.arranger_metadata?.display_name}`,
     openGraph: {
-      title: `${data?.title} - Arranged by ${data?.users?.arranger_metadata[0].display_name}`,
+      title: `${data?.title} - Arranged by ${data?.users?.arranger_metadata?.display_name}`,
       images: data?.thumbnail_url,
     },
     authors: [
       {
-        name: data?.users?.arranger_metadata[0].display_name,
-        url: `https://musiquality.vercel.app/arranger/${data?.users?.arranger_metadata[0].user_id}}`,
+        name: data?.users?.arranger_metadata?.display_name,
+        url: `https://musiquality.vercel.app/arranger/${data?.users?.arranger_metadata?.user_id}}`,
       },
     ],
   };
@@ -48,11 +48,11 @@ export default async function Sheet({ params }: { params: { id: string } }) {
               <div className="text-sm text-muted-foreground flex items-center gap-2 mb-1">
                 <ArrangerAvatar
                   className="size-9"
-                  url={data.users?.arranger_metadata[0].avatar_url}
+                  url={data.users?.arranger_metadata?.avatar_url}
                 />{" "}
                 <p className="flex flex-col ">
                   <span>Arranged by</span>
-                  <span>{data.users?.arranger_metadata[0].display_name}</span>
+                  <span>{data.users?.arranger_metadata?.display_name}</span>
                 </p>
               </div>
               <BrandedText
