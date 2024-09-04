@@ -50,7 +50,10 @@ export default function TabsSection({ userData }: { userData: UserData }) {
           <ScrollBar orientation="horizontal" />
         </ScrollArea>
       </TabsList>
-      <TabsContent value="new" className="border rounded-md p-1 space-y-1 mt-1">
+      <TabsContent
+        value="new"
+        className="border rounded-md p-1 flex flex-col gap-1"
+      >
         <Select onValueChange={(value) => setNewType(value)} value={newType}>
           <SelectTrigger className="border-none shadow-none bg-muted">
             <SelectValue placeholder="Select type" />

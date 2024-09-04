@@ -61,6 +61,7 @@ export default function UpdateForm({
         title: "Error!",
         description: "Image is still uploading!",
         variant: "destructive",
+        duration: 3000,
       });
     const { error } = await updateUser(data, userData.id);
     if (error)
@@ -68,6 +69,7 @@ export default function UpdateForm({
     toast({
       title: "Success!",
       description: "successfully updated!",
+      duration: 3000,
     });
     queryClient.invalidateQueries({ queryKey: ["user"] });
     closeForm();
@@ -137,6 +139,7 @@ export default function UpdateForm({
                     title: e.name,
                     description: e.message,
                     variant: "destructive",
+                    duration: 3000,
                   });
                   setImageUploading(false);
                   setChanges({ ...changes, avatar: false });
@@ -144,6 +147,10 @@ export default function UpdateForm({
                 onUploadAborted={() => {
                   setChanges({ ...changes, avatar: false });
                   setImageUploading(false);
+                }}
+                onBeforeUploadBegin={(files) => {
+                  setImageUploading(true);
+                  return files;
                 }}
               />
               <FormMessage />

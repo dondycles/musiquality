@@ -43,7 +43,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { Loader, Plus } from "lucide-react";
+import { Currency, ExternalLink, Loader, Plus } from "lucide-react";
+import CurrencyInput from "@/components/ui/currency-input";
+import { useToast } from "@/components/ui/use-toast";
+import Link from "next/link";
+import { ToastAction } from "@/components/ui/toast";
+import { Separator } from "@/components/ui/separator";
 
 export const uploadSheetSchema = z.object({
   title: z.string(),
@@ -62,44 +67,67 @@ export default function UploadSheetForm({ arranger }: { arranger: string }) {
   const uploadSheetForm = useForm<z.infer<typeof uploadSheetSchema>>({
     resolver: zodResolver(uploadSheetSchema),
     defaultValues: {
-      original_artist: [""],
+      original_artist: [],
       sheet_url: "",
       title: "",
       thumbnail_url: "",
       arranger: arranger,
       difficulty: "",
-      instrument: [""],
+      instrument: [],
       with_chords: false,
       with_lyrics: false,
       price: 3,
     },
   });
+  const [uploadingPdf, setUploadingPdf] = useState(false);
   const [originalArtistInput, setOriginalArtistInput] = useState<{
     [key: number]: string;
   }>({});
   const [usedInstruments, setUsedInstruments] = useState<string[]>([]);
 
-  const instruments = ["Piano", "Violin", "Guitar"];
+  const { toast } = useToast();
 
   const _uploadSheet = async (data: z.infer<typeof uploadSheetSchema>) => {
-    const { error } = await uploadSheet(data);
-    if (error)
-      return uploadSheetForm.setError("sheet_url", {
-        message: error,
+    if (uploadingPdf)
+      return toast({
+        title: "Error",
+        description: "Please wait until the uploading of PDF is done",
+        variant: "destructive",
+        duration: 3000,
       });
+    const { error, success } = await uploadSheet(data);
+    if (error)
+      return toast({
+        title: "Error",
+        description: error,
+        variant: "destructive",
+        duration: 3000,
+      });
+    toast({
+      title: "Success",
+      duration: 3000,
+      description: "Sheet successfully uploaded",
+      action: (
+        <Link href={"/sheet/" + success} target="_blank">
+          <ToastAction altText="Visit">View Sheet</ToastAction>
+        </Link>
+      ),
+    });
+    setOriginalArtistInput([""]);
+    setUsedInstruments([]);
+    uploadSheetForm.setValue("original_artist", [""]);
+    uploadSheetForm.setValue("instrument", []);
     uploadSheetForm.reset();
-    setOriginalArtistInput([]);
   };
 
   useEffect(() => {
+    if (uploadSheetForm.formState.isSubmitting) return;
     uploadSheetForm.setValue(
       "original_artist",
       Object.values(originalArtistInput)
     );
-  }, [originalArtistInput]);
-  useEffect(() => {
     uploadSheetForm.setValue("instrument", usedInstruments);
-  }, [usedInstruments]);
+  }, [originalArtistInput, uploadSheetForm, usedInstruments]);
 
   return (
     <Form {...uploadSheetForm}>
@@ -107,23 +135,34 @@ export default function UploadSheetForm({ arranger }: { arranger: string }) {
         onSubmit={uploadSheetForm.handleSubmit(_uploadSheet)}
         className="flex flex-col gap-1"
       >
-        <div className="flex flex-col sm:flex-row gap-1">
+        <div className="flex flex-col sm:flex-row gap-1 flex-1">
           <FormField
             control={uploadSheetForm.control}
             name="sheet_url"
             render={({ field }) => (
-              <FormItem className="self-stretch border rounded-md flex items-center justify-center">
+              <FormItem className="self-stretch  flex items-center justify-center flex-col">
                 <FormControl>
                   <>
                     {field.value ? (
                       <Dialog>
-                        <DialogTrigger>
-                          <SheetThumbnail
-                            _setThumbnailUrl={(url) => {
-                              uploadSheetForm.setValue("thumbnail_url", url);
-                            }}
-                            pdfUrl={field.value}
-                          />
+                        <DialogTrigger className="flex-1 h-full">
+                          <div className="flex flex-col gap-1 flex-1  h-full">
+                            <SheetThumbnail
+                              className="border rounded-md overflow-hidden flex-1"
+                              _setThumbnailUrl={(url) => {
+                                uploadSheetForm.setValue("thumbnail_url", url);
+                              }}
+                              pdfUrl={field.value}
+                            />
+                            <Button
+                              className="mb-0 mt-auto"
+                              onClick={() =>
+                                uploadSheetForm.resetField("sheet_url")
+                              }
+                            >
+                              Remove
+                            </Button>
+                          </div>
                         </DialogTrigger>
                         <DialogContent className="p-4">
                           <DialogHeader>
@@ -141,11 +180,15 @@ export default function UploadSheetForm({ arranger }: { arranger: string }) {
                               return <Loader className="animate-spin" />;
                           },
                         }}
-                        className="ut-button:bg-foreground ut-button:text-background ut-label:text-background flex rounded-md justify-normal p-2 m-auto ut-button:size-9 "
+                        className="ut-button:bg-foreground ut-button:text-background ut-label:text-background flex rounded-md justify-normal p-2 mx-auto ut-button:size-9 "
                         endpoint="sheet"
                         onClientUploadComplete={(data) => {
                           uploadSheetForm.setValue("sheet_url", data[0].url);
+                          setUploadingPdf(false);
                         }}
+                        onUploadBegin={() => setUploadingPdf(true)}
+                        onUploadError={() => setUploadingPdf(false)}
+                        onUploadAborted={() => setUploadingPdf(false)}
                       />
                     )}
                   </>
@@ -154,7 +197,9 @@ export default function UploadSheetForm({ arranger }: { arranger: string }) {
               </FormItem>
             )}
           />
+          <Separator orientation="vertical" className="h-full" />
           <div className="flex flex-col gap-1 flex-1">
+            {/* Title */}
             <FormField
               control={uploadSheetForm.control}
               name="title"
@@ -167,43 +212,49 @@ export default function UploadSheetForm({ arranger }: { arranger: string }) {
                 </FormItem>
               )}
             />
+            {/* og artists */}
             <FormField
               control={uploadSheetForm.control}
               name="original_artist"
-              render={() => (
+              render={({ field }) => (
                 <FormItem className="space-y-1">
-                  {Array.from(
-                    {
-                      length: Object.entries(originalArtistInput).length + 1,
-                    },
-                    (_, index) => {
-                      return (
-                        <Input
-                          onChange={(e) => {
-                            setOriginalArtistInput((prev) => ({
-                              ...prev,
-                              [index]: e.target.value,
-                            }));
+                  <FormControl>
+                    <>
+                      {Array.from(
+                        {
+                          length: Object.values(originalArtistInput).length + 1,
+                        },
+                        (_, index) => {
+                          return (
+                            <Input
+                              onInput={(e) => {
+                                setOriginalArtistInput((prev) => ({
+                                  ...prev,
+                                  [index]: e?.currentTarget?.value,
+                                }));
 
-                            if (e.target.value === "") {
-                              setOriginalArtistInput(
-                                Object.values(originalArtistInput).toSpliced(
-                                  index,
-                                  1
-                                )
-                              );
-                            }
-                          }}
-                          key={`artist-${index + 1}`}
-                          placeholder={`Original Artist ${index + 1}`}
-                        />
-                      );
-                    }
-                  )}
+                                if (e?.currentTarget?.value === "") {
+                                  setOriginalArtistInput(
+                                    Object.values(
+                                      originalArtistInput
+                                    ).toSpliced(index, 1)
+                                  );
+                                }
+                              }}
+                              value={field.value[index]}
+                              key={`artist-${index + 1}`}
+                              placeholder={`Original Artist ${index + 1}`}
+                            />
+                          );
+                        }
+                      )}
+                    </>
+                  </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
+            {/* difficulty */}
             <FormField
               control={uploadSheetForm.control}
               name="difficulty"
@@ -214,6 +265,7 @@ export default function UploadSheetForm({ arranger }: { arranger: string }) {
                       <Select
                         onValueChange={field.onChange}
                         defaultValue={field.value}
+                        value={field.value}
                       >
                         <SelectTrigger>
                           <SelectValue placeholder="Difficulty" />
@@ -230,6 +282,7 @@ export default function UploadSheetForm({ arranger }: { arranger: string }) {
                 );
               }}
             />
+            {/* instruments */}
             <FormField
               control={uploadSheetForm.control}
               name="instrument"
@@ -304,21 +357,14 @@ export default function UploadSheetForm({ arranger }: { arranger: string }) {
                 }}
               />
             </div>
-            <FormField
-              name="price"
-              control={uploadSheetForm.control}
-              render={({ field }) => {
-                return (
-                  <FormItem className="flex flex-row items-start space-x-1 space-y-0">
-                    <FormControl>
-                      <Input {...field} placeholder="Price ($USD)" />
-                    </FormControl>
-                  </FormItem>
-                );
-              }}
-            />
+            <CurrencyInput form={uploadSheetForm} name="price" />
             {/* <FormField control={uploadSheetForm.control} name="with_lyrics" /> */}
-            <Button className="mb-0 mt-auto">Upload</Button>
+            <Button
+              className="mb-0 mt-auto"
+              disabled={uploadSheetForm.formState.isSubmitting || uploadingPdf}
+            >
+              Upload
+            </Button>
           </div>
         </div>
       </form>

@@ -22,12 +22,17 @@ export default async function uploadSheet(
     })
     .select("id")
     .single();
-  if (sheetError) return { error: sheetError.message };
+  if (sheetError) {
+    return { error: sheetError.message };
+  }
   const { error: sheetUrlError } = await supabase.from("sheets_url").insert({
     sheet: sheetData.id,
     url: data.sheet_url,
   });
-  if (sheetUrlError) return { error: sheetUrlError.message };
+  if (sheetUrlError) {
+    await supabase.from("sheets").delete().eq("id", sheetData.id);
+    return { error: sheetUrlError.message };
+  }
 
-  return { success: "Uploaded" };
+  return { success: sheetData.id };
 }

@@ -23,8 +23,8 @@ export default async function Sheet({ params }: { params: { id: string } }) {
 
   if (data)
     return (
-      <div className="w-full flex">
-        <div className="flex flex-col-reverse sm:flex-row-reverse justify-end items-start gap-4 mx-auto">
+      <div className="w-full flex flex-1">
+        <div className="flex flex-col-reverse sm:flex-row-reverse justify-end items-start gap-4 mx-auto h-fit">
           <div className="self-stretch flex flex-col gap-4">
             <div className="flex flex-col items-center sm:items-start">
               <div className="text-sm text-muted-foreground flex items-center gap-2 mb-1">
