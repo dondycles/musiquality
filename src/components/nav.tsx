@@ -53,7 +53,7 @@ export default function Nav() {
         <BrandedText text="MusiQuality" />
       </Link>
       <nav className="flex flex-row gap-4">
-        <SideCart />
+        <SideCart user={user?.success} />
         {userLoading ? (
           <Skeleton className="size-9" />
         ) : user?.success ? (
@@ -76,7 +76,7 @@ export default function Nav() {
               <DropdownMenuLabel>My Account</DropdownMenuLabel>
               <DropdownMenuSeparator />
               <DropdownMenuGroup>
-                <DropdownMenuItem asChild onClick={logOut}>
+                <DropdownMenuItem asChild>
                   <Link href={"/library"}>
                     <MdLibraryBooks className="mr-2 h-4 w-4" />
                     <span>Library</span>

@@ -1,9 +1,14 @@
 "use server";
+import { SheetData } from "@/types/sheet-data";
 import Stripe from "stripe";
+import saveTransaction from "./save-transaction";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET!);
 
-export default async function createPayementIntent(amount: number) {
+export default async function createPaymentIntent(
+  amount: number,
+  sheets: Pick<SheetData, "id" | "price">[]
+) {
   const paymentIntent = await stripe.paymentIntents.create({
     amount,
     currency: "usd",
@@ -11,9 +16,12 @@ export default async function createPayementIntent(amount: number) {
       enabled: true,
     },
     metadata: {
-      hehe: "tangina mo",
+      sheets: JSON.stringify(sheets),
     },
   });
+
+  await saveTransaction(paymentIntent.id, sheets, amount);
+
   return {
     success: {
       paymentIntentID: paymentIntent.id,

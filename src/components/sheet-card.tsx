@@ -29,17 +29,14 @@ export default function SheetCard({ sheet }: { sheet: SheetData }) {
             {sheet.users?.arranger_metadata[0].display_name}
           </Link>
         </div>
-        <div className="flex flex-col flex-1">
+        <div className="flex flex-col flex-1 w-full">
           <Link href={"/sheet/" + sheet.id} className="font-semibold">
             {sheet.title}
           </Link>
           <SheetOGArtistText
             artists={sheet.original_artist as original_artist}
           />
-          <CurrencyText amount={sheet.price} className="mt-auto mb-0" />
-        </div>
-        <div className="flex gap-4 w-full mb-0 mt-auto">
-          <Button className="flex-1 ">Buy</Button>
+
           <AddToCartBtn sheet={sheet} />
         </div>
       </CardFooter>

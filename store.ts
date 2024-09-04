@@ -6,6 +6,7 @@ type Cart = {
   cart: SheetData[];
   addToCart: (sheet: SheetData) => void;
   removeToCart: (sheet: SheetData) => void;
+  resetCart: () => void;
 };
 
 export const useCartStore = create<Cart>()(
@@ -28,6 +29,10 @@ export const useCartStore = create<Cart>()(
               (sheet) => sheet.id !== sheetTobeRemoved.id
             ),
           };
+        }),
+      resetCart: () =>
+        set(() => {
+          return { cart: [] };
         }),
     }),
     { name: "cart" }

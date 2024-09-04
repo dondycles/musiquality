@@ -88,11 +88,7 @@ export default async function Sheet({ params }: { params: { id: string } }) {
               </p>
 
               <Separator className="my-2" />
-              <div className="flex gap-2 items-center justify-center sm:justify-start">
-                <CurrencyText className="text-primary" amount={data.price} />
-                <Button>Buy</Button>
-                <AddToCartBtn sheet={data} />
-              </div>
+              <AddToCartBtn sheet={data} />
             </div>
           </div>
           <SheetThumbnail
