@@ -37,7 +37,7 @@ export default function ArrangerBasicInfoCard({
     <div className="flex flex-col gap-4 items-center">
       <div className="flex flex-col gap-4 w-full">
         <div className="flex flex-col justify-center gap-4 items-center mx-auto">
-          <Link href={"/arranger/" + userData.arranger_metadata.id}>
+          <Link href={"/arranger/" + userData.arranger_metadata?.id}>
             <div className="relative rounded-full size-32">
               <Image
                 placeholder="blur"
