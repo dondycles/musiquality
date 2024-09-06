@@ -113,9 +113,11 @@ export default function UpdateForm({
                 blurDataURL="/favicon.ico"
                 quality={100}
                 src={field.value ?? "/favicon.ico"}
-                fill
+                width={256}
+                height={256}
                 alt={userData.arranger_metadata?.avatar_url ?? "User PFP"}
                 className="rounded-md border object-cover object-center"
+                sizes="144px"
               />
               <UploadButton
                 content={{
@@ -157,7 +159,6 @@ export default function UpdateForm({
             </FormItem>
           )}
         />
-
         <FormField
           control={updateUserForm.control}
           name="display_name"
@@ -174,7 +175,6 @@ export default function UpdateForm({
             </FormItem>
           )}
         />
-
         <FormField
           control={updateUserForm.control}
           name="description"

@@ -28,7 +28,7 @@ export default async function getUser(authData: User) {
       ...authData,
       avatar_url: dbData.avatar_url ?? authData.user_metadata.avatar_url,
       name: dbData.name ?? authData.user_metadata.name,
-      library: library[0],
+      library: library[0] ?? [],
     };
     return newUserData;
   };

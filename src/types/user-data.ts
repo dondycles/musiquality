@@ -19,8 +19,7 @@ export type UserData = User &
                     | null
                     | undefined;
                 })
-              | null
-              | undefined;
+              | null;
           }
         >;
       }
@@ -34,8 +33,7 @@ export type UserData = User &
                 | null
                 | undefined;
             })
-          | null
-          | undefined;
+          | null;
       }
     >;
     sheets: Database["public"]["Tables"]["sheets"]["Row"][];

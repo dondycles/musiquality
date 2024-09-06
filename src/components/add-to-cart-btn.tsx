@@ -3,10 +3,8 @@
 import { Button } from "./ui/button";
 import { SheetData } from "@/types/sheet-data";
 import { useCartStore } from "../../store";
-import { useQuery } from "@tanstack/react-query";
 import { useContext } from "react";
 
-import getUser from "@/actions/get-user";
 import { Check, ShoppingCart, X } from "lucide-react";
 import {
   Tooltip,
@@ -19,7 +17,6 @@ import { ClassNameValue } from "tailwind-merge";
 import { cn } from "@/lib/utils";
 
 import { motion } from "framer-motion";
-import { AuthContext } from "./auth-provider";
 import { UserDataContext } from "./user-data-provider";
 export default function AddToCartBtn({
   sheet,
@@ -32,14 +29,15 @@ export default function AddToCartBtn({
   textClassName?: ClassNameValue;
   branded?: boolean;
 }) {
-  const { userData } = useContext(UserDataContext);
+  const { userData, isLoading } = useContext(UserDataContext);
   const cart = useCartStore();
 
-  const isBought = Boolean(
-    userData?.library.find((item) => item.sheets?.id === sheet.id)
-  );
+  const isBought =
+    !isLoading &&
+    Boolean(userData?.library.find((item) => item.sheets?.id === sheet.id));
 
-  const isCarted = Boolean(cart.cart.find((item) => item.id === sheet.id));
+  const isCarted =
+    !isLoading && Boolean(cart.cart.find((item) => item.id === sheet.id));
 
   return (
     <div

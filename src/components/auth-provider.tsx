@@ -29,17 +29,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         setLoading(true);
         const { data: sessionData, error: sessionError } =
           await supabase.auth.getSession();
-        if (sessionError || !sessionData?.session) {
-          console.error("Error fetching session:", sessionError);
-          return;
-        }
+        if (sessionError || !sessionData?.session)
+          throw new Error(`Error fetching session: ${sessionError?.message}`);
 
         const session = sessionData.session;
         const user = session.user;
 
         setState({ user, session, isLoading: loading });
       } catch (error) {
-        console.error("Unexpected error fetching session/user:", error);
+        throw new Error(`Error fetching session: ${error}`);
       } finally {
         setLoading(false);
       }
@@ -49,10 +47,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     const { data: authListener } = supabase.auth.onAuthStateChange(
       (_event, session) => {
-        if (session) {
-          setState({ user: session.user, session, isLoading: loading });
-        } else {
-          setState({ user: null, session: null, isLoading: loading });
+        try {
+          setLoading(true);
+          if (session) {
+            setState({ user: session.user, session, isLoading: loading });
+          } else {
+            setState({ user: null, session: null, isLoading: loading });
+          }
+        } catch (error) {
+          throw new Error(`Error fetching session: ${error}`);
+        } finally {
+          setLoading(false);
         }
       }
     );
@@ -62,7 +67,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     };
   }, [supabase]);
 
-  // Memoize the context value to avoid unnecessary re-renders
   const value = useMemo(() => state, [state]);
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

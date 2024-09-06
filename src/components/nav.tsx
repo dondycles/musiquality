@@ -54,6 +54,7 @@ export default function Nav() {
                   src={userData?.avatar_url ?? "/favicon.ico"}
                   alt={userData?.name ?? "User pfp"}
                   className="scale-90 rounded-full"
+                  sizes="144px"
                 />
               </Button>
             </DropdownMenuTrigger>

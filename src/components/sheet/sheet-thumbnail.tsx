@@ -47,6 +47,7 @@ export default function SheetThumbnail({
           src={thumbnailUrl || existingThumbnailUrl || "/favicon.ico"}
           alt={"PDF Viewer"}
           quality={100}
+          sizes="(max-width: 768px) 256px, (max-width: 1200px) 512px, 720px"
         />
       </div>
     );

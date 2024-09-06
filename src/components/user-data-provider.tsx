@@ -14,10 +14,11 @@ export function UserDataProvider({ children }: { children: React.ReactNode }) {
   const { user, isLoading: authLoading } = useContext(AuthContext);
 
   const { data, isLoading } = useQuery({
-    enabled: user !== null && !authLoading,
+    enabled: !!user && !authLoading,
     queryKey: ["user", user?.id],
     queryFn: async () => {
-      const { success } = await getUser(user!);
+      const { success, error } = await getUser(user!);
+      if (error) throw new Error(error);
       return success ?? null;
     },
   });
