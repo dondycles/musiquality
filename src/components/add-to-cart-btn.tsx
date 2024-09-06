@@ -20,6 +20,7 @@ import { cn } from "@/lib/utils";
 
 import { motion } from "framer-motion";
 import { AuthContext } from "./auth-provider";
+import { UserDataContext } from "./user-data-provider";
 export default function AddToCartBtn({
   sheet,
   containerClassName,
@@ -31,16 +32,11 @@ export default function AddToCartBtn({
   textClassName?: ClassNameValue;
   branded?: boolean;
 }) {
-  const { user } = useContext(AuthContext);
+  const { userData } = useContext(UserDataContext);
   const cart = useCartStore();
-  const { data: userData } = useQuery({
-    queryKey: ["user", user?.id],
-    queryFn: async () => await getUser(),
-    enabled: user?.id !== null,
-  });
 
   const isBought = Boolean(
-    userData?.success?.library.find((item) => item.sheets?.id === sheet.id)
+    userData?.library.find((item) => item.sheets?.id === sheet.id)
   );
 
   const isCarted = Boolean(cart.cart.find((item) => item.id === sheet.id));
