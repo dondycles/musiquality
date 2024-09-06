@@ -1,24 +1,19 @@
 "use client";
-
-import getUser from "@/actions/get-user";
-import { useQuery } from "@tanstack/react-query";
 import Transactions from "./transactions";
 import LibrarySheets from "./sheets";
 import { Separator } from "@/components/ui/separator";
+import { useContext } from "react";
+import { UserDataContext } from "@/components/user-data-provider";
 
-export default function LibraryMain({ userId }: { userId: string | null }) {
-  const { data: user, isLoading: userLoading } = useQuery({
-    queryKey: ["user", userId],
-    queryFn: async () => await getUser(),
-    enabled: userId !== null,
-  });
+export default function LibraryMain() {
+  const { isLoading: userLoading, userData } = useContext(UserDataContext);
   if (userLoading) return;
-  if (user?.success)
+  if (userData)
     return (
-      <div className="flex flex-col gap-4">
-        <LibrarySheets userData={user?.success} />
+      <div className="flex flex-col gap-4 px-4 lg:px-40 xl:px-64">
+        <LibrarySheets userData={userData} />
         <Separator />
-        <Transactions userData={user?.success} />
+        <Transactions userData={userData} />
       </div>
     );
 }

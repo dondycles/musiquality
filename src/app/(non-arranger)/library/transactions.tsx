@@ -1,5 +1,5 @@
 "use client";
-import getMyTransactions from "@/actions/get-my-transactions";
+
 import CurrencyText from "@/components/currency-text";
 import {
   Table,
@@ -10,7 +10,6 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { UserData } from "@/types/user-data";
-import { useQuery } from "@tanstack/react-query";
 
 type metadata = {
   price: number;

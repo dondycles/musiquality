@@ -6,9 +6,5 @@ export default async function Library() {
   const supabase = createClient();
   const { user } = (await supabase.auth.getUser()).data;
   if (!user) redirect("/login");
-  return (
-    <div>
-      <LibraryMain userId={user.id} />
-    </div>
-  );
+  return <LibraryMain />;
 }

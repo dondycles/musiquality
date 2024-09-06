@@ -1,36 +1,19 @@
 "use client";
 
-import getUser from "@/actions/get-user";
-import { useQuery } from "@tanstack/react-query";
 import ArrangerBasicInfoCard from "./arranger-basic-info-card";
 import TabsSection from "./tabs-section";
-import { useEffect, useState } from "react";
-import { createClient } from "@/utils/supabase/client";
+import { useContext } from "react";
+import { UserDataContext } from "@/components/user-data-provider";
 
 export default function Dashboard() {
-  const supabase = createClient();
-  const [userId, setUserId] = useState<string | null>(null);
-  const { data: userData, isLoading: userLoading } = useQuery({
-    queryKey: ["user", userId],
-    queryFn: async () => await getUser(),
-    enabled: userId !== null,
-  });
-
-  useEffect(() => {
-    async function _setUserId() {
-      const id = (await supabase.auth.getUser()).data.user?.id;
-      if (!id) return setUserId(null);
-      setUserId(id);
-    }
-    _setUserId();
-  }, [supabase]);
+  const { isLoading: userLoading, userData } = useContext(UserDataContext);
 
   if (userLoading) return;
-  if (userData?.success)
+  if (userData)
     return (
-      <>
-        <ArrangerBasicInfoCard userData={userData.success} />
-        <TabsSection userData={userData.success} />
-      </>
+      <div className="flex flex-col gap-4 px-4 lg:px-40 xl:px-64">
+        <ArrangerBasicInfoCard userData={userData} />
+        <TabsSection userData={userData} />
+      </div>
     );
 }

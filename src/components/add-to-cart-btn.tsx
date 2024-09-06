@@ -4,16 +4,10 @@ import { Button } from "./ui/button";
 import { SheetData } from "@/types/sheet-data";
 import { useCartStore } from "../../store";
 import { useQuery } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
-import { createClient } from "@/utils/supabase/client";
+import { useContext } from "react";
+
 import getUser from "@/actions/get-user";
-import {
-  Check,
-  ClipboardCheck,
-  ListCheck,
-  ShoppingCart,
-  X,
-} from "lucide-react";
+import { Check, ShoppingCart, X } from "lucide-react";
 import {
   Tooltip,
   TooltipContent,
@@ -23,8 +17,9 @@ import {
 import CurrencyText from "./currency-text";
 import { ClassNameValue } from "tailwind-merge";
 import { cn } from "@/lib/utils";
-import { Skeleton } from "./ui/skeleton";
-import { animate, motion } from "framer-motion";
+
+import { motion } from "framer-motion";
+import { AuthContext } from "./auth-provider";
 export default function AddToCartBtn({
   sheet,
   containerClassName,
@@ -36,31 +31,19 @@ export default function AddToCartBtn({
   textClassName?: ClassNameValue;
   branded?: boolean;
 }) {
-  const supabase = createClient();
-  const [userId, setUserId] = useState<string | null>(null);
+  const { user } = useContext(AuthContext);
   const cart = useCartStore();
-  const { data: user, isLoading: userLoading } = useQuery({
-    queryKey: ["user", userId],
+  const { data: userData } = useQuery({
+    queryKey: ["user", user?.id],
     queryFn: async () => await getUser(),
-    enabled: userId !== null,
+    enabled: user?.id !== null,
   });
 
   const isBought = Boolean(
-    user?.success?.library.find((item) => item.sheets?.id === sheet.id)
+    userData?.success?.library.find((item) => item.sheets?.id === sheet.id)
   );
 
   const isCarted = Boolean(cart.cart.find((item) => item.id === sheet.id));
-
-  useEffect(() => {
-    async function _setUserId() {
-      const id = (await supabase.auth.getUser()).data.user?.id;
-      if (!id) return;
-      setUserId(id);
-    }
-    _setUserId();
-  }, [supabase]);
-
-  if (userLoading) return <Skeleton className="mt-auto mb-0 h-10 w-full" />;
 
   return (
     <div
@@ -88,9 +71,7 @@ export default function AddToCartBtn({
                 cart.addToCart(sheet);
               }}
               size={"icon"}
-              variant={
-                isCarted ? "destructive" : isBought ? "ghost" : "default"
-              }
+              variant={isCarted ? "destructive" : "ghost"}
             >
               {isCarted ? (
                 <motion.div

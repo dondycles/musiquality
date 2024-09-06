@@ -12,7 +12,7 @@ export default function SheetOGArtistText({
   className?: ClassNameValue;
 }) {
   return (
-    <p className={cn("text-muted-foreground text-sm", className)}>
+    <p className={cn("text-muted-foreground text-sm truncate", className)}>
       {artists
         .filter((artist) => artist !== "")
         .map((artist, i) => `${artist}${i !== artists.length - 1 ? ", " : ""}`)}

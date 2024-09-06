@@ -1,6 +1,22 @@
 import { SheetData } from "@/types/sheet-data";
 import { create } from "zustand";
-import { persist } from "zustand/middleware";
+import { persist, createJSONStorage, StateStorage } from "zustand/middleware";
+import { get, set, del } from "idb-keyval";
+
+const storage: StateStorage = {
+  getItem: async (name: string): Promise<string | null> => {
+    // console.log(name, "has been retrieved");
+    return (await get(name)) || null;
+  },
+  setItem: async (name: string, value: string): Promise<void> => {
+    // console.log(name, "with value", value, "has been saved");
+    await set(name, value);
+  },
+  removeItem: async (name: string): Promise<void> => {
+    // console.log(name, "has been deleted");
+    await del(name);
+  },
+};
 
 type Cart = {
   cart: SheetData[];
@@ -35,6 +51,38 @@ export const useCartStore = create<Cart>()(
           return { cart: [] };
         }),
     }),
-    { name: "cart" }
+    { name: "cart", storage: createJSONStorage(() => storage) }
+  )
+);
+
+type PagePreferences = {
+  topSellingSheetsView: "row" | "col";
+  setTopSellingSheetsView: () => void;
+  topArrangersView: "row" | "col";
+  setTopArrangersView: () => void;
+};
+
+export const usePagePreferences = create<PagePreferences>()(
+  persist(
+    (set) => ({
+      topSellingSheetsView: "col",
+      setTopSellingSheetsView: () =>
+        set((state) => {
+          return {
+            topSellingSheetsView:
+              state.topSellingSheetsView === "col" ? "row" : "col",
+          };
+        }),
+      topArrangersView: "col",
+      setTopArrangersView: () =>
+        set((state) => {
+          return {
+            topArrangersView: state.topArrangersView === "col" ? "row" : "col",
+          };
+        }),
+    }),
+    {
+      name: "page-preferences",
+    }
   )
 );

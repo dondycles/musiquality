@@ -1,6 +1,6 @@
 import uploadSheet from "@/actions/upload-sheet";
-import SheetThumbnail from "@/components/sheet-thumbnail";
-import SheetViewer from "@/components/sheet-viewer";
+import SheetThumbnail from "@/components/sheet/sheet-thumbnail";
+import SheetViewer from "@/components/sheet/sheet-viewer";
 import {
   MultiSelector,
   MultiSelectorContent,

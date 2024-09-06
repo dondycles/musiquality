@@ -1,6 +1,5 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import Image from "next/image";
 import {
   Dialog,
   DialogContent,
@@ -12,10 +11,10 @@ import {
 import { useState } from "react";
 import { useToast } from "@/components/ui/use-toast";
 import UpdateForm from "./_forms/update-form";
-import { Badge } from "@/components/ui/badge";
-import Link from "next/link";
 import { UserData } from "@/types/user-data";
-import { Library, Music, Pencil, Star, Users } from "lucide-react";
+import { Pencil } from "lucide-react";
+import ArrangerBadges from "@/components/arranger/badges";
+import ArrangerAvatar from "@/components/arranger/avatar";
 
 export default function ArrangerBasicInfoCard({
   userData,
@@ -36,20 +35,11 @@ export default function ArrangerBasicInfoCard({
     <div className="flex flex-col gap-4 items-center">
       <div className="flex flex-col gap-4 w-full">
         <div className="flex flex-col justify-center gap-4 items-center mx-auto">
-          <Link href={"/arranger/" + userData.arranger_metadata?.id}>
-            <div className="relative rounded-full size-32">
-              <Image
-                placeholder="blur"
-                blurDataURL="/favicon.ico"
-                quality={100}
-                priority
-                src={userData.arranger_metadata?.avatar_url ?? "/favicon.ico"}
-                fill
-                alt={userData.arranger_metadata?.display_name ?? "User PFP"}
-                className="rounded-md object-cover object-top "
-              />
-            </div>
-          </Link>
+          <ArrangerAvatar
+            arranger={userData.arranger_metadata?.id ?? ""}
+            className="size-32 rounded-md"
+            url={userData.arranger_metadata?.avatar_url}
+          />
           <Dialog
             key={"updateForm"}
             open={openForm}
@@ -102,24 +92,11 @@ export default function ArrangerBasicInfoCard({
             </div>
           </div>
         </div>
-        <div className="flex gap-2 flex-wrap justify-center items-center">
-          <Badge>
-            <span className="line-clamp-1">99 Followers</span>
-            <Users size={16} className="ml-1 text-yellow-400" />
-          </Badge>
-          <Badge>
-            <span className="line-clamp-1">109 Sheets</span>
-            <Music size={16} className="ml-1 text-yellow-400" />
-          </Badge>
-          <Badge>
-            <span className="line-clamp-1">2 Packages</span>
-            <Library size={16} className="ml-1 text-yellow-400" />
-          </Badge>
-          <Badge>
-            <span className="line-clamp-1">988 Stars</span>
-            <Star size={16} className="ml-1 text-yellow-400" />
-          </Badge>
-        </div>
+        <ArrangerBadges
+          className="flex-wrap mx-auto"
+          followers={123}
+          sheets={userData.sheets.length}
+        />
       </div>
       {/* warning dialog */}
       <Dialog

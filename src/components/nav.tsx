@@ -2,8 +2,7 @@
 import Link from "next/link";
 import { Button } from "./ui/button";
 import { usePathname } from "next/navigation";
-import { useQuery, useQueryClient } from "@tanstack/react-query";
-import getUser from "@/actions/get-user";
+import { useQueryClient } from "@tanstack/react-query";
 
 import {
   DropdownMenu,
@@ -14,48 +13,35 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { createClient } from "@/utils/supabase/client";
 import Image from "next/image";
 import BrandedText from "./branded-text";
 import { Skeleton } from "./ui/skeleton";
-import { useEffect, useState } from "react";
+import { useContext } from "react";
 import SideCart from "./side-cart";
 import { Library, LogOut, Music, User } from "lucide-react";
+import signOut from "@/actions/sign-out";
+import { UserDataContext } from "./user-data-provider";
 export default function Nav() {
   const queryClient = useQueryClient();
   const pathname = usePathname();
-  const supabase = createClient();
-  const [userId, setUserId] = useState<string | null>(null);
-  const { data: user, isLoading: userLoading } = useQuery({
-    queryKey: ["user", userId],
-    queryFn: async () => await getUser(),
-    enabled: userId !== null,
-  });
+  const { userData, isLoading: userLoading } = useContext(UserDataContext);
+
   async function logOut() {
-    await supabase.auth.signOut();
+    await signOut();
     queryClient.clear();
     window.location.reload();
   }
 
-  useEffect(() => {
-    async function _setUserId() {
-      const id = (await supabase.auth.getUser()).data.user?.id;
-      if (!id) return setUserId(null);
-      setUserId(id);
-    }
-    _setUserId();
-  }, [supabase]);
-
   return (
-    <header className="fixed top-0 left-0 w-full border-b flex justify-between items-center p-4 backdrop-blur bg-background/95 z-10">
+    <header className="fixed top-0 left-0 w-full border-b flex justify-between items-center p-4 backdrop-blur bg-background/95 z-10 px-4 lg:px-40 xl:px-64">
       <Link href={"/"}>
         <BrandedText text="MusiQuality" />
       </Link>
       <nav className="flex flex-row gap-4">
-        <SideCart user={user?.success} />
+        <SideCart user={userData} />
         {userLoading ? (
           <Skeleton className="size-9" />
-        ) : user?.success ? (
+        ) : userData ? (
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button
@@ -65,8 +51,8 @@ export default function Nav() {
               >
                 <Image
                   fill
-                  src={user.success?.avatar_url ?? "/favicon.ico"}
-                  alt={user.success?.name ?? "User pfp"}
+                  src={userData?.avatar_url ?? "/favicon.ico"}
+                  alt={userData?.name ?? "User pfp"}
                   className="scale-90 rounded-full"
                 />
               </Button>

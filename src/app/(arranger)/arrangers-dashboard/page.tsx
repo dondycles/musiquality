@@ -12,7 +12,7 @@ export default async function ArrangersDashboard() {
   if (!user) redirect("/login");
   return (
     <div className="flex flex-col gap-4">
-      <header className="flex flex-row gap-4 items-center border-b p-4 pt-0 -mx-4">
+      <header className="flex flex-row gap-4 items-center border-b p-4 pt-0 px-4  lg:px-40 xl:px-64">
         <Link href={"/"}>
           <ChevronLeft size={16} />
         </Link>

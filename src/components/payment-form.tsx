@@ -88,7 +88,7 @@ export default function PaymentForm({
               "Paying..."
             ) : (
               <>
-                Pay{" "}
+                Pay
                 <CurrencyText
                   className="ml-2 text-base sm:text-base md:text-base"
                   amount={total}

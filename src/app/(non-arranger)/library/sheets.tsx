@@ -2,8 +2,8 @@ import BrandedText from "@/components/branded-text";
 
 import SheetOGArtistText, {
   original_artist,
-} from "@/components/sheet-og-artists-text";
-import SheetThumbnail from "@/components/sheet-thumbnail";
+} from "@/components/sheet/sheet-og-artists-text";
+import SheetThumbnail from "@/components/sheet/sheet-thumbnail";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { UserData } from "@/types/user-data";

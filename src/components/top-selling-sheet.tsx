@@ -10,12 +10,13 @@ import {
 import { useQuery } from "@tanstack/react-query";
 import getSheets from "@/actions/get-sheets";
 import { Skeleton } from "./ui/skeleton";
-import SheetCard from "./sheet-card";
+import SheetCard from "./sheet/sheet-card";
 import { Button } from "./ui/button";
 import { Columns3, Flame, Rows3 } from "lucide-react";
-import { useState } from "react";
-import SheetBar from "./sheet-bar";
+import SheetBar from "./sheet/sheet-bar";
 import { motion } from "framer-motion";
+import { usePagePreferences } from "../../store";
+import GridViewer from "./grid-viewer";
 export default function TopSellingSheets() {
   const { data: sheets, isLoading: loadingSheets } = useQuery({
     queryFn: async () => {
@@ -24,7 +25,7 @@ export default function TopSellingSheets() {
     },
     queryKey: ["sheets"],
   });
-  const [view, setView] = useState<"row" | "col">("row");
+  const pagePreferences = usePagePreferences();
   if (loadingSheets) return <Skeleton className="h-32 w-full" />;
   return (
     <Card className="shadow-none border-none">
@@ -34,13 +35,12 @@ export default function TopSellingSheets() {
             <Flame size={24} className="m-auto" />
             <p className="my-auto">Top Selling Sheets</p>
           </div>
-
           <Button
-            onClick={() => setView((prev) => (prev === "col" ? "row" : "col"))}
+            onClick={() => pagePreferences.setTopSellingSheetsView()}
             size={"icon"}
             variant={"ghost"}
           >
-            {view === "col" && (
+            {pagePreferences.topSellingSheetsView === "col" && (
               <motion.div
                 key={"col"}
                 initial={{ rotate: 90, scale: 0.75 }}
@@ -51,7 +51,7 @@ export default function TopSellingSheets() {
               </motion.div>
             )}
 
-            {view === "row" && (
+            {pagePreferences.topSellingSheetsView === "row" && (
               <motion.div
                 key={"row"}
                 initial={{ rotate: 90, scale: 0.75 }}
@@ -64,8 +64,8 @@ export default function TopSellingSheets() {
           </Button>
         </CardTitle>
       </CardHeader>
-      <CardContent className="p-0 mt-3">
-        {view === "row" && (
+      <CardContent className="p-0 pb-3 mt-3">
+        {pagePreferences.topSellingSheetsView === "col" && (
           <Carousel
             opts={{
               align: "start",
@@ -86,12 +86,12 @@ export default function TopSellingSheets() {
             </div>
           </Carousel>
         )}
-        {view === "col" && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 grid-rows-5 w-full h-fit gap-2">
+        {pagePreferences.topSellingSheetsView === "row" && (
+          <GridViewer>
             {sheets?.map((sheet) => (
               <SheetBar sheet={sheet} key={sheet.id} />
             ))}
-          </div>
+          </GridViewer>
         )}
       </CardContent>
     </Card>

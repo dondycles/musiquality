@@ -17,10 +17,7 @@ export default function TabsSection({ userData }: { userData: UserData }) {
   const [newType, setNewType] = useState<string>("sheet");
 
   return (
-    <Tabs
-      defaultValue="sheets"
-      className="mx-auto w-full max-w-[800px] flex flex-col"
-    >
+    <Tabs defaultValue="sheets" className="w-full flex flex-col">
       <TabsList className="w-full justify-start h-fit p-0">
         <ScrollArea className="flex-1">
           <div className="w-full flex overflow-x-auto overflow-y-visible truncate p-1 space-x-1">

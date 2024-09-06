@@ -7,6 +7,8 @@ import { extractRouterConfig } from "uploadthing/server";
 
 import { ourFileRouter } from "@/app/api/uploadthing/core";
 import { Toaster } from "@/components/ui/toaster";
+import { AuthProvider } from "@/components/auth-provider";
+import { UserDataProvider } from "@/components/user-data-provider";
 
 const gloock = Cormorant_Unicase({
   subsets: ["latin"],
@@ -42,7 +44,11 @@ export default function RootLayout({
            */
           routerConfig={extractRouterConfig(ourFileRouter)}
         />
-        <QueryProvider>{children}</QueryProvider>
+        <QueryProvider>
+          <AuthProvider>
+            <UserDataProvider>{children}</UserDataProvider>
+          </AuthProvider>
+        </QueryProvider>
         <Toaster />
       </body>
     </html>
