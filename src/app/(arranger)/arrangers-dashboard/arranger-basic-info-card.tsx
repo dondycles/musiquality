@@ -1,6 +1,5 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { Pencil1Icon } from "@radix-ui/react-icons";
 import Image from "next/image";
 import {
   Dialog,
@@ -14,9 +13,9 @@ import { useState } from "react";
 import { useToast } from "@/components/ui/use-toast";
 import UpdateForm from "./_forms/update-form";
 import { Badge } from "@/components/ui/badge";
-import { MdLibraryBooks, MdMusicNote, MdPeople, MdStars } from "react-icons/md";
 import Link from "next/link";
 import { UserData } from "@/types/user-data";
+import { Library, Music, Pencil, Star, Users } from "lucide-react";
 
 export default function ArrangerBasicInfoCard({
   userData,
@@ -44,9 +43,7 @@ export default function ArrangerBasicInfoCard({
                 blurDataURL="/favicon.ico"
                 quality={100}
                 priority
-                src={
-                  userData.arranger_metadata?.avatar_url ?? "/favicon.ico"
-                }
+                src={userData.arranger_metadata?.avatar_url ?? "/favicon.ico"}
                 fill
                 alt={userData.arranger_metadata?.display_name ?? "User PFP"}
                 className="rounded-md object-cover object-top "
@@ -70,7 +67,7 @@ export default function ArrangerBasicInfoCard({
           >
             <DialogTrigger asChild>
               <Button size={"icon"} variant={"outline"}>
-                <Pencil1Icon />
+                <Pencil size={16} />
               </Button>
             </DialogTrigger>
             <DialogContent className="w-80 p-4">
@@ -108,19 +105,19 @@ export default function ArrangerBasicInfoCard({
         <div className="flex gap-2 flex-wrap justify-center items-center">
           <Badge>
             <span className="line-clamp-1">99 Followers</span>
-            <MdPeople size={16} className="ml-1 text-yellow-400" />
+            <Users size={16} className="ml-1 text-yellow-400" />
           </Badge>
           <Badge>
             <span className="line-clamp-1">109 Sheets</span>
-            <MdMusicNote size={16} className="ml-1 text-yellow-400" />
+            <Music size={16} className="ml-1 text-yellow-400" />
           </Badge>
           <Badge>
             <span className="line-clamp-1">2 Packages</span>
-            <MdLibraryBooks size={16} className="ml-1 text-yellow-400" />
+            <Library size={16} className="ml-1 text-yellow-400" />
           </Badge>
           <Badge>
             <span className="line-clamp-1">988 Stars</span>
-            <MdStars size={16} className="ml-1 text-yellow-400" />
+            <Star size={16} className="ml-1 text-yellow-400" />
           </Badge>
         </div>
       </div>

@@ -15,11 +15,11 @@ import { useToast } from "@/components/ui/use-toast";
 import { useQueryClient } from "@tanstack/react-query";
 import Image from "next/image";
 import { UploadButton } from "@/utils/uploadthing";
-import { PlusIcon } from "@radix-ui/react-icons";
 import { useEffect } from "react";
 import { arrangersMetadataSchema } from "@/types/arrangers-metadata";
 import { type UserData } from "@/types/user-data";
 import updateArranger from "@/actions/update-arranger";
+import { Plus } from "lucide-react";
 export default function UpdateForm({
   userData,
   closeForm,
@@ -120,7 +120,7 @@ export default function UpdateForm({
               <UploadButton
                 content={{
                   button() {
-                    return <PlusIcon />;
+                    return <Plus size={16} />;
                   },
                 }}
                 endpoint="imageUploader"

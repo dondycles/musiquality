@@ -9,8 +9,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import UploadSheetForm from "./_forms/upload-sheet-form";
-import { MdAnnouncement, MdLibraryBooks, MdMusicNote } from "react-icons/md";
-import { PlusIcon } from "lucide-react";
+import { Library, Music, PlusIcon, StickyNote } from "lucide-react";
 import { type UserData } from "@/types/user-data";
 import { useState } from "react";
 
@@ -61,19 +60,19 @@ export default function TabsSection({ userData }: { userData: UserData }) {
           <SelectContent>
             <SelectItem value="sheet">
               <div className="flex flex-row items-center text-xs">
-                <MdMusicNote className="mr-1 text-xl" />
+                <Music size={16} className="mr-1 text-xl" />
                 Sheet
               </div>
             </SelectItem>
             <SelectItem value="package">
               <div className="flex flex-row items-center text-xs">
-                <MdLibraryBooks className="mr-1 text-xl" />
+                <Library size={16} className="mr-1 text-xl" />
                 Package
               </div>
             </SelectItem>
             <SelectItem value="post">
               <div className="flex flex-row items-center text-xs">
-                <MdAnnouncement className="mr-1 text-xl" />
+                <StickyNote size={16} className="mr-1 text-xl" />
                 Post
               </div>
             </SelectItem>

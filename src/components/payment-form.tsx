@@ -69,7 +69,7 @@ export default function PaymentForm({
     onSuccess();
   };
   return (
-    <form onSubmit={handleSubmit} className="flex flex-col gap-3">
+    <form onSubmit={handleSubmit} className="flex flex-col gap-3 flex-1">
       {user ? (
         <>
           <LinkAuthenticationElement
@@ -81,7 +81,7 @@ export default function PaymentForm({
           />
           <PaymentElement />
           <Button
-            className="mt-4"
+            className="mt-auto mb-0"
             disabled={!stripe || !elements || isPaying || !user}
           >
             {isPaying ? (
@@ -98,7 +98,7 @@ export default function PaymentForm({
           </Button>
         </>
       ) : (
-        <Button className="mt-4" asChild>
+        <Button className="mt-auto mb-0" asChild>
           <Link href={"/login"}>Log in to pay</Link>
         </Button>
       )}

@@ -43,7 +43,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { Currency, ExternalLink, Loader, Plus } from "lucide-react";
+import { Loader, Plus } from "lucide-react";
 import CurrencyInput from "@/components/ui/currency-input";
 import { useToast } from "@/components/ui/use-toast";
 import Link from "next/link";
@@ -175,9 +175,11 @@ export default function UploadSheetForm({ arranger }: { arranger: string }) {
                       <UploadButton
                         content={{
                           button({ ready, isUploading }) {
-                            if (ready) return <Plus />;
+                            if (ready) return <Plus size={16} />;
                             if (isUploading)
-                              return <Loader className="animate-spin" />;
+                              return (
+                                <Loader size={16} className="animate-spin" />
+                              );
                           },
                         }}
                         className="ut-button:bg-foreground ut-button:text-background ut-label:text-background flex rounded-md justify-normal p-2 mx-auto ut-button:size-9 "

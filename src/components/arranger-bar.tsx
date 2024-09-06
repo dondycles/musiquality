@@ -1,4 +1,4 @@
-import { FiHeart } from "react-icons/fi";
+import { Heart } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Badge } from "./ui/badge";
 import { Button } from "./ui/button";
@@ -11,7 +11,7 @@ export default function ArrangerBar() {
         <AvatarFallback className="font-gloock">MQ</AvatarFallback>
       </Avatar>
       <div className="grid gap-1">
-        <p className="truncate">John Rod Dondoyano </p>
+        <p className="truncate font-semibold text-sm">John Rod Dondoyano </p>
         <div className="flex gap-1 truncate">
           <Badge variant={"outline"} className="w-fit">
             243 Sheets
@@ -22,7 +22,7 @@ export default function ArrangerBar() {
         </div>
       </div>
       <Button variant={"ghost"} size={"icon"} className="ml-auto mr-0">
-        <FiHeart size={16} />
+        <Heart size={16} />
       </Button>
     </div>
   );

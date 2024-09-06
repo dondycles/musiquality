@@ -1,5 +1,5 @@
 import BrandedText from "@/components/branded-text";
-import SheetDownloadLink from "@/components/sheet-download-link";
+
 import SheetOGArtistText, {
   original_artist,
 } from "@/components/sheet-og-artists-text";
@@ -7,9 +7,8 @@ import SheetThumbnail from "@/components/sheet-thumbnail";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { UserData } from "@/types/user-data";
-import { Loader } from "lucide-react";
+
 import Link from "next/link";
-import { Suspense } from "react";
 
 export default function LibrarySheets({ userData }: { userData: UserData }) {
   return (

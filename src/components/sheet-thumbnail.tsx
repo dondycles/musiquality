@@ -1,9 +1,9 @@
 "use client";
 import { getPdfThumbnail } from "@/lib/getPdfThumbnail";
 import { cn } from "@/lib/utils";
+import { Loader } from "lucide-react";
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import { FiLoader } from "react-icons/fi";
 import { ClassNameValue } from "tailwind-merge";
 export default function SheetThumbnail({
   pdfUrl,
@@ -26,7 +26,7 @@ export default function SheetThumbnail({
       _setThumbnailUrl!(url);
     }
     fetchThumbnail();
-  }, [pdfUrl]);
+  }, [_setThumbnailUrl, pdfUrl]);
 
   useEffect(() => {
     if (!existingThumbnailUrl) return;
@@ -50,6 +50,5 @@ export default function SheetThumbnail({
         />
       </div>
     );
-
-  return <FiLoader className="animate-spin m-8" />;
+  return <Loader className="animate-spin my-8 m-auto" />;
 }

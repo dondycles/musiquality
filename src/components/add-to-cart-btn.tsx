@@ -24,15 +24,17 @@ import CurrencyText from "./currency-text";
 import { ClassNameValue } from "tailwind-merge";
 import { cn } from "@/lib/utils";
 import { Skeleton } from "./ui/skeleton";
-
+import { animate, motion } from "framer-motion";
 export default function AddToCartBtn({
   sheet,
   containerClassName,
   textClassName,
+  branded,
 }: {
   sheet: SheetData;
   containerClassName?: ClassNameValue;
   textClassName?: ClassNameValue;
+  branded?: boolean;
 }) {
   const supabase = createClient();
   const [userId, setUserId] = useState<string | null>(null);
@@ -59,6 +61,7 @@ export default function AddToCartBtn({
   }, [supabase]);
 
   if (userLoading) return <Skeleton className="mt-auto mb-0 h-10 w-full" />;
+
   return (
     <div
       className={cn(
@@ -70,11 +73,11 @@ export default function AddToCartBtn({
         <p className="text-xs text-muted-foreground">Purchased</p>
       ) : (
         <CurrencyText
+          branded={branded}
           className={cn("flex-1 w-full", textClassName)}
           amount={sheet.price}
         />
       )}
-
       <TooltipProvider>
         <Tooltip>
           <TooltipTrigger asChild>
@@ -90,11 +93,32 @@ export default function AddToCartBtn({
               }
             >
               {isCarted ? (
-                <X size={16} />
+                <motion.div
+                  key={"carted"}
+                  initial={{ rotate: 90, scale: 0.75 }}
+                  animate={{ rotate: 0, scale: 1 }}
+                  exit={{ rotate: -90, scale: 0.75 }}
+                >
+                  <X size={16} />
+                </motion.div>
               ) : isBought ? (
-                <Check className="text-green-500" />
+                <motion.div
+                  key={"bought"}
+                  initial={{ rotate: 90, scale: 0.75 }}
+                  animate={{ rotate: 0, scale: 1 }}
+                  exit={{ rotate: -90, scale: 0.75 }}
+                >
+                  <Check className="text-green-500" />
+                </motion.div>
               ) : (
-                <ShoppingCart size={16} />
+                <motion.div
+                  key={"initial"}
+                  initial={{ scale: 0.75, x: -10 }}
+                  animate={{ scale: 1, x: 0 }}
+                  exit={{ scale: 0.75, x: 10 }}
+                >
+                  <ShoppingCart size={16} />
+                </motion.div>
               )}
             </Button>
           </TooltipTrigger>

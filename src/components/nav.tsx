@@ -1,7 +1,6 @@
 "use client";
 import Link from "next/link";
 import { Button } from "./ui/button";
-import { FiLogOut, FiMusic } from "react-icons/fi";
 import { usePathname } from "next/navigation";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import getUser from "@/actions/get-user";
@@ -16,12 +15,12 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { createClient } from "@/utils/supabase/client";
-import { MdLibraryBooks } from "react-icons/md";
 import Image from "next/image";
 import BrandedText from "./branded-text";
 import { Skeleton } from "./ui/skeleton";
 import { useEffect, useState } from "react";
 import SideCart from "./side-cart";
+import { Library, LogOut, Music, User } from "lucide-react";
 export default function Nav() {
   const queryClient = useQueryClient();
   const pathname = usePathname();
@@ -78,18 +77,24 @@ export default function Nav() {
               <DropdownMenuGroup>
                 <DropdownMenuItem asChild>
                   <Link href={"/library"}>
-                    <MdLibraryBooks className="mr-2 h-4 w-4" />
+                    <Library size={16} className="mr-1" />
                     <span>Library</span>
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
+                  <Link href={"/profile "}>
+                    <User size={16} className="mr-1" />
+                    <span>User&apos;s Profile</span>
+                  </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
                   <Link href={"/arrangers-dashboard"}>
-                    <FiMusic className="mr-2 h-4 w-4" />
+                    <Music size={16} className="mr-1" />
                     <span>Arranger&apos;s Dashboard</span>
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={logOut}>
-                  <FiLogOut className="mr-2 h-4 w-4" />
+                  <LogOut size={16} className="mr-1" />
                   <span>Log out</span>
                 </DropdownMenuItem>
               </DropdownMenuGroup>

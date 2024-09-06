@@ -1,6 +1,6 @@
-import { MdOutlineLocalFireDepartment } from "react-icons/md";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
 import ArrangerBar from "./arranger-bar";
+import { Flame } from "lucide-react";
 
 export default function TopArrangers() {
   return (
@@ -8,7 +8,7 @@ export default function TopArrangers() {
       <CardHeader className="p-0">
         <CardTitle className="none">
           <div className="grid grid-cols-[24px,1fr] gap-1">
-            <MdOutlineLocalFireDepartment size={24} className="m-auto" />
+            <Flame size={24} className="m-auto" />
             <p className="my-auto">Top Arrangers</p>
           </div>
         </CardTitle>
