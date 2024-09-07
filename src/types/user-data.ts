@@ -1,5 +1,6 @@
 import { type User } from "@supabase/supabase-js";
 import { type Database } from "@/../../database.types";
+import { SheetData } from "./sheet-data";
 
 export type UserData = User &
   Database["public"]["Tables"]["users"]["Row"] & {
@@ -13,7 +14,7 @@ export type UserData = User &
         library: Array<
           Database["public"]["Tables"]["library"]["Row"] & {
             sheets:
-              | (Database["public"]["Tables"]["sheets"]["Row"] & {
+              | (SheetData & {
                   sheets_url:
                     | Database["public"]["Tables"]["sheets_url"]["Row"]
                     | null
@@ -27,7 +28,7 @@ export type UserData = User &
     library: Array<
       Database["public"]["Tables"]["library"]["Row"] & {
         sheets:
-          | (Database["public"]["Tables"]["sheets"]["Row"] & {
+          | (SheetData & {
               sheets_url:
                 | Database["public"]["Tables"]["sheets_url"]["Row"]
                 | null

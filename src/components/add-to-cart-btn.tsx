@@ -39,6 +39,8 @@ export default function AddToCartBtn({
   const isCarted =
     !isLoading && Boolean(cart.cart.find((item) => item.id === sheet.id));
 
+  const isArranger = Boolean(sheet.arranger === userData?.id);
+
   return (
     <div
       className={cn(
@@ -55,59 +57,61 @@ export default function AddToCartBtn({
           amount={sheet.price}
         />
       )}
-      <TooltipProvider>
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Button
-              onClick={() => {
-                if (isBought) return;
-                if (isCarted) return cart.removeToCart(sheet);
-                cart.addToCart(sheet);
-              }}
-              size={"icon"}
-              variant={isCarted ? "destructive" : "ghost"}
-            >
-              {isCarted ? (
-                <motion.div
-                  key={"carted"}
-                  initial={{ rotate: 90, scale: 0.75 }}
-                  animate={{ rotate: 0, scale: 1 }}
-                  exit={{ rotate: -90, scale: 0.75 }}
-                >
-                  <X size={16} />
-                </motion.div>
-              ) : isBought ? (
-                <motion.div
-                  key={"bought"}
-                  initial={{ rotate: 90, scale: 0.75 }}
-                  animate={{ rotate: 0, scale: 1 }}
-                  exit={{ rotate: -90, scale: 0.75 }}
-                >
-                  <Check className="text-green-500" />
-                </motion.div>
-              ) : (
-                <motion.div
-                  key={"initial"}
-                  initial={{ scale: 0.75, x: -10 }}
-                  animate={{ scale: 1, x: 0 }}
-                  exit={{ scale: 0.75, x: 10 }}
-                >
-                  <ShoppingCart size={16} />
-                </motion.div>
-              )}
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent>
-            <p>
-              {isCarted
-                ? "Remove from cart"
-                : isBought
-                ? "Purchased"
-                : "Add to cart"}
-            </p>
-          </TooltipContent>
-        </Tooltip>
-      </TooltipProvider>
+      {!isArranger && (
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button
+                onClick={() => {
+                  if (isBought) return;
+                  if (isCarted) return cart.removeToCart(sheet);
+                  cart.addToCart(sheet);
+                }}
+                size={"icon"}
+                variant={isCarted ? "destructive" : "ghost"}
+              >
+                {isCarted ? (
+                  <motion.div
+                    key={"carted"}
+                    initial={{ rotate: 90, scale: 0.75 }}
+                    animate={{ rotate: 0, scale: 1 }}
+                    exit={{ rotate: -90, scale: 0.75 }}
+                  >
+                    <X size={16} />
+                  </motion.div>
+                ) : isBought ? (
+                  <motion.div
+                    key={"bought"}
+                    initial={{ rotate: 90, scale: 0.75 }}
+                    animate={{ rotate: 0, scale: 1 }}
+                    exit={{ rotate: -90, scale: 0.75 }}
+                  >
+                    <Check className="text-green-500" />
+                  </motion.div>
+                ) : (
+                  <motion.div
+                    key={"initial"}
+                    initial={{ scale: 0.75, x: -10 }}
+                    animate={{ scale: 1, x: 0 }}
+                    exit={{ scale: 0.75, x: 10 }}
+                  >
+                    <ShoppingCart size={16} />
+                  </motion.div>
+                )}
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>
+                {isCarted
+                  ? "Remove from cart"
+                  : isBought
+                  ? "Purchased"
+                  : "Add to cart"}
+              </p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+      )}
     </div>
   );
 }

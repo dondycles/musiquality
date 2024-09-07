@@ -16,7 +16,9 @@ import { Columns3, Flame, Rows3 } from "lucide-react";
 import SheetBar from "./sheet/sheet-bar";
 import { motion } from "framer-motion";
 import { usePagePreferences } from "../../store";
-import GridViewer from "./grid-viewer";
+import GridViewer from "./list-viewer";
+import { chunkArray } from "@/lib/chunkArray";
+
 export default function TopSellingSheets() {
   const { data: sheets, isLoading: loadingSheets } = useQuery({
     queryFn: async () => {
@@ -26,6 +28,7 @@ export default function TopSellingSheets() {
     queryKey: ["sheets"],
   });
   const pagePreferences = usePagePreferences();
+
   if (loadingSheets) return <Skeleton className="h-32 w-full" />;
   return (
     <Card className="shadow-none border-none">
@@ -75,7 +78,10 @@ export default function TopSellingSheets() {
           >
             <CarouselContent>
               {sheets?.map((sheet) => (
-                <CarouselItem key={sheet.id} className="basis-[1/1]">
+                <CarouselItem
+                  key={sheet.id}
+                  className="max-w-fit w-fit min-w-fit"
+                >
                   <SheetCard sheet={sheet} key={sheet.id} />
                 </CarouselItem>
               ))}
@@ -87,11 +93,35 @@ export default function TopSellingSheets() {
           </Carousel>
         )}
         {pagePreferences.topSellingSheetsView === "row" && (
-          <GridViewer>
-            {sheets?.map((sheet) => (
-              <SheetBar sheet={sheet} key={sheet.id} />
-            ))}
-          </GridViewer>
+          <Carousel
+            opts={{
+              align: "start",
+              slidesToScroll: 1,
+              dragFree: true,
+            }}
+          >
+            <CarouselContent>
+              {sheets &&
+                chunkArray(sheets, 10).map((sheet, index) => {
+                  return (
+                    <CarouselItem
+                      key={`chunked-top-selling-${index}`}
+                      className="basis-full"
+                    >
+                      <GridViewer length={sheet.length}>
+                        {sheet.map((sheet) => (
+                          <SheetBar sheet={sheet} key={sheet.id} />
+                        ))}
+                      </GridViewer>
+                    </CarouselItem>
+                  );
+                })}
+            </CarouselContent>
+            <div className="flex gap-4 items-center justify-center mt-3">
+              <CarouselPrevious />
+              <CarouselNext />
+            </div>
+          </Carousel>
         )}
       </CardContent>
     </Card>

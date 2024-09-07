@@ -2,7 +2,7 @@
 import ArrangerAvatar from "@/components/arranger/avatar";
 import ArrangerBadges from "@/components/arranger/badges";
 import BrandedText from "@/components/branded-text";
-import GridViewer from "@/components/grid-viewer";
+import ListViewer from "@/components/list-viewer";
 import SheetBar from "@/components/sheet/sheet-bar";
 import { SingleArrangerData } from "@/types/arranger-data";
 
@@ -24,7 +24,7 @@ export default function ArrangerMain({
           <ArrangerBadges sheets={arranger.sheets.length} />
         </div>
       </div>
-      <GridViewer>
+      <ListViewer length={arranger.sheets.length}>
         {arranger.sheets.map((sheet) => {
           return (
             <SheetBar
@@ -37,7 +37,7 @@ export default function ArrangerMain({
             />
           );
         })}
-      </GridViewer>
+      </ListViewer>
     </div>
   );
 }

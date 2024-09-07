@@ -16,7 +16,7 @@ import { useQuery } from "@tanstack/react-query";
 import getTopArrangers from "@/actions/get-top-arrangers";
 import { Skeleton } from "./ui/skeleton";
 import ArrangerCard from "./arranger/card";
-import GridViewer from "./grid-viewer";
+import GridViewer from "./list-viewer";
 export default function TopArrangers() {
   const pagePreferences = usePagePreferences();
 
@@ -68,31 +68,32 @@ export default function TopArrangers() {
       </CardHeader>
       <CardContent className="p-0 pb-3 mt-3">
         {pagePreferences.topArrangersView === "col" && (
-          <div>
-            <Carousel
-              opts={{
-                align: "start",
-                slidesToScroll: 1,
-                dragFree: true,
-              }}
-            >
-              <CarouselContent>
-                {arrangers?.map((arranger) => (
-                  <CarouselItem key={arranger.id} className="basis-[1/1]">
-                    <ArrangerCard arranger={arranger} />
-                  </CarouselItem>
-                ))}
-              </CarouselContent>
-              <div className="flex gap-4 items-center justify-center mt-3">
-                <CarouselPrevious />
-                <CarouselNext />
-              </div>
-            </Carousel>
-          </div>
+          <Carousel
+            opts={{
+              align: "start",
+              slidesToScroll: 1,
+              dragFree: true,
+            }}
+          >
+            <CarouselContent>
+              {arrangers?.map((arranger) => (
+                <CarouselItem
+                  key={arranger.id}
+                  className="w-fit min-w-fit max-w-fit"
+                >
+                  <ArrangerCard arranger={arranger} />
+                </CarouselItem>
+              ))}
+            </CarouselContent>
+            <div className="flex gap-4 items-center justify-center mt-3">
+              <CarouselPrevious />
+              <CarouselNext />
+            </div>
+          </Carousel>
         )}
 
         {pagePreferences.topArrangersView === "row" && (
-          <GridViewer>
+          <GridViewer length={arrangers?.length!}>
             {arrangers?.map((arranger) => (
               <ArrangerBar arranger={arranger} key={arranger.id} />
             ))}

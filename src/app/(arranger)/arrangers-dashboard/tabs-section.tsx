@@ -12,6 +12,8 @@ import UploadSheetForm from "./_forms/upload-sheet-form";
 import { Library, Music, PlusIcon, StickyNote } from "lucide-react";
 import { type UserData } from "@/types/user-data";
 import { useState } from "react";
+import SheetBar from "@/components/sheet/sheet-bar";
+import ListViewer from "@/components/list-viewer";
 
 export default function TabsSection({ userData }: { userData: UserData }) {
   const [newType, setNewType] = useState<string>("sheet");
@@ -46,38 +48,55 @@ export default function TabsSection({ userData }: { userData: UserData }) {
           <ScrollBar orientation="horizontal" />
         </ScrollArea>
       </TabsList>
-      <TabsContent
-        value="new"
-        className="border rounded-md p-1 flex flex-col gap-1"
-      >
-        <Select onValueChange={(value) => setNewType(value)} value={newType}>
-          <SelectTrigger className="border-none shadow-none bg-muted">
-            <SelectValue placeholder="Select type" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="sheet">
-              <div className="flex flex-row items-center text-xs">
-                <Music size={16} className="mr-1 text-xl" />
-                Sheet
-              </div>
-            </SelectItem>
-            <SelectItem value="package">
-              <div className="flex flex-row items-center text-xs">
-                <Library size={16} className="mr-1 text-xl" />
-                Package
-              </div>
-            </SelectItem>
-            <SelectItem value="post">
-              <div className="flex flex-row items-center text-xs">
-                <StickyNote size={16} className="mr-1 text-xl" />
-                Post
-              </div>
-            </SelectItem>
-          </SelectContent>
-        </Select>
-        {newType === "sheet" && <UploadSheetForm arranger={userData.id} />}
+      <TabsContent value="new">
+        <div className="border rounded-md p-1 flex flex-col gap-1">
+          <Select onValueChange={(value) => setNewType(value)} value={newType}>
+            <SelectTrigger className="border-none shadow-none bg-muted">
+              <SelectValue placeholder="Select type" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="sheet">
+                <div className="flex flex-row items-center text-xs">
+                  <Music size={16} className="mr-1 text-xl" />
+                  Sheet
+                </div>
+              </SelectItem>
+              <SelectItem value="package">
+                <div className="flex flex-row items-center text-xs">
+                  <Library size={16} className="mr-1 text-xl" />
+                  Package
+                </div>
+              </SelectItem>
+              <SelectItem value="post">
+                <div className="flex flex-row items-center text-xs">
+                  <StickyNote size={16} className="mr-1 text-xl" />
+                  Post
+                </div>
+              </SelectItem>
+            </SelectContent>
+          </Select>
+          {newType === "sheet" && <UploadSheetForm arranger={userData.id} />}
+        </div>
       </TabsContent>
-      <TabsContent value="sheets">Sheets</TabsContent>
+      <TabsContent value="sheets">
+        <ListViewer length={userData.sheets.length}>
+          {userData.sheets.map((sheet) => {
+            return (
+              <SheetBar
+                sheet={{
+                  ...sheet,
+                  arranger: userData.id,
+                  users: {
+                    id: userData.id,
+                    arranger_metadata: userData.arranger_metadata,
+                  },
+                }}
+                key={sheet.id}
+              />
+            );
+          })}
+        </ListViewer>
+      </TabsContent>
       <TabsContent value="packages">Packages</TabsContent>
       <TabsContent value="reviews">Reviews</TabsContent>
       <TabsContent value="posts">Posts</TabsContent>

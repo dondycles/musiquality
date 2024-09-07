@@ -1,14 +1,5 @@
-import BrandedText from "@/components/branded-text";
-
-import SheetOGArtistText, {
-  original_artist,
-} from "@/components/sheet/sheet-og-artists-text";
-import SheetThumbnail from "@/components/sheet/sheet-thumbnail";
-import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
+import SheetCard from "@/components/sheet/sheet-card";
 import { UserData } from "@/types/user-data";
-
-import Link from "next/link";
 
 export default function LibrarySheets({ userData }: { userData: UserData }) {
   return (
@@ -16,33 +7,15 @@ export default function LibrarySheets({ userData }: { userData: UserData }) {
       <p className="text-muted-foreground text-sm">
         Purchased Sheets ({userData.library.length})
       </p>
-      <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
+      <div className="grid grid-cols-1 xs:grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
         {userData.library.map((item) => {
           return (
-            <div
+            <SheetCard
+              className="w-full"
+              sheet={item.sheets!}
               key={item.sheets?.id}
-              className="flex flex-col border rounded-md p-1 sm:p-4 w-full text-center self-stretch"
-            >
-              <SheetThumbnail
-                existingThumbnailUrl={item.sheets?.thumbnail_url}
-                className="w-full flex-1 mx-auto"
-              />
-              <Separator />
-              <BrandedText
-                text={item.sheets?.title!}
-                className="text-lg sm:text-lg md:text-lg line-clamp-1"
-              />
-              <SheetOGArtistText
-                artists={item.sheets?.original_artist as original_artist}
-                className="text-xs mb-4 line-clamp-1"
-              />
-              <Link
-                href={item.sheets?.sheets_url?.url as string}
-                target="_blank"
-              >
-                <Button className="w-full">View</Button>
-              </Link>
-            </div>
+              urlDownload={item.sheets?.sheets_url?.url}
+            />
           );
         })}
       </div>

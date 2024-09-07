@@ -1,6 +1,7 @@
 "use client";
 import { createClient } from "@/utils/supabase/client";
 import { Session, User } from "@supabase/supabase-js";
+import { useRouter } from "next/navigation";
 import { createContext, useEffect, useState, useMemo } from "react";
 
 type InitialState = {
@@ -21,6 +22,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const supabase = createClient();
   const [state, setState] = useState(initialState);
   const [loading, setLoading] = useState(false);
+  const router = useRouter();
   useEffect(() => {
     if (loading) return;
 
@@ -29,15 +31,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         setLoading(true);
         const { data: sessionData, error: sessionError } =
           await supabase.auth.getSession();
-        if (sessionError || !sessionData?.session)
+
+        if (sessionError)
           throw new Error(`Error fetching session: ${sessionError?.message}`);
+
+        if (!sessionData.session) return router.push("/login");
 
         const session = sessionData.session;
         const user = session.user;
 
         setState({ user, session, isLoading: loading });
       } catch (error) {
-        throw new Error(`Error fetching session: ${error}`);
       } finally {
         setLoading(false);
       }
@@ -55,7 +59,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             setState({ user: null, session: null, isLoading: loading });
           }
         } catch (error) {
-          throw new Error(`Error fetching session: ${error}`);
         } finally {
           setLoading(false);
         }
@@ -65,6 +68,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     return () => {
       authListener.subscription.unsubscribe();
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [supabase]);
 
   const value = useMemo(() => state, [state]);
