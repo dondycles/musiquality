@@ -13,7 +13,7 @@ export default function ArrangerMain({
 }) {
   return (
     <div className="flex flex-col gap-4 px-4 lg:px-40 xl:px-64">
-      <div className="flex flex-col sm:flex-row gap-4 justify-center">
+      <div className="flex flex-col xs:flex-row gap-4 justify-center">
         <ArrangerAvatar
           className="size-32 rounded-md"
           arranger={arranger.user_id}

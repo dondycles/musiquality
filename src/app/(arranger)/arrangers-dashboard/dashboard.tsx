@@ -11,7 +11,7 @@ export default function Dashboard() {
   if (userLoading) return;
   if (userData)
     return (
-      <div className="flex flex-col gap-4 px-4 lg:px-40 xl:px-64">
+      <div className="flex flex-col gap-4">
         <ArrangerBasicInfoCard userData={userData} />
         <TabsSection userData={userData} />
       </div>

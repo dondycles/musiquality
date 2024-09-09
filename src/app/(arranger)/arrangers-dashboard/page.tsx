@@ -20,15 +20,18 @@ export default async function ArrangersDashboard() {
   if (!isArranger?.is_arranger) redirect("/arranger");
 
   return (
-    <div className="flex flex-col gap-4">
-      <header className="flex flex-row gap-4 items-center border-b p-4 pt-0 px-4  lg:px-40 xl:px-64">
+    <div className="flex flex-col gap-4 px-4 lg:px-40 xl:px-64">
+      {/* <header className="flex flex-row gap-4 items-center border-b p-4 pt-0 px-4  lg:px-40 xl:px-64">
         <Link href={"/"}>
           <ChevronLeft size={16} />
         </Link>
         <h1 className="font-gloock font-black text-4xl">
           <BrandedText text="Arranger's Dashboard" />
         </h1>
-      </header>
+      </header> */}
+      <h1 className="text-sm text-muted-foreground">
+        Arranger&apos;s Dashboard
+      </h1>
       <Dashboard />
     </div>
   );
