@@ -62,6 +62,7 @@ export default function AddToCartBtn({
           <Tooltip>
             <TooltipTrigger asChild>
               <Button
+                disabled={isLoading}
                 onClick={() => {
                   if (isBought) return;
                   if (isCarted) return cart.removeToCart(sheet);

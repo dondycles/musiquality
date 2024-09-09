@@ -14,9 +14,9 @@ import {
 } from "./ui/carousel";
 import { useQuery } from "@tanstack/react-query";
 import getTopArrangers from "@/actions/get-top-arrangers";
-import { Skeleton } from "./ui/skeleton";
 import ArrangerCard from "./arranger/card";
 import GridViewer from "./list-viewer";
+import Loader from "./loader";
 export default function TopArrangers() {
   const pagePreferences = usePagePreferences();
 
@@ -27,7 +27,15 @@ export default function TopArrangers() {
       return success ?? [];
     },
   });
-  if (loadingArrangers) return <Skeleton className="h-32 w-full" />;
+  if (loadingArrangers)
+    return (
+      <Loader className="h-fit w-full p-4 flex justify-center items-center">
+        <div className="grid grid-cols-[24px,1fr] gap-1 text-muted-foreground">
+          <Flame size={24} className="m-auto" />
+          <p className="my-auto">Top Arrangers</p>
+        </div>
+      </Loader>
+    );
 
   return (
     <Card className="shadow-none border-none">

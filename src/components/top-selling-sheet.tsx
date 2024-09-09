@@ -9,7 +9,6 @@ import {
 } from "./ui/carousel";
 import { useQuery } from "@tanstack/react-query";
 import getSheets from "@/actions/get-sheets";
-import { Skeleton } from "./ui/skeleton";
 import SheetCard from "./sheet/sheet-card";
 import { Button } from "./ui/button";
 import { Columns3, Flame, Rows3 } from "lucide-react";
@@ -18,6 +17,7 @@ import { motion } from "framer-motion";
 import { usePagePreferences } from "../../store";
 import GridViewer from "./list-viewer";
 import { chunkArray } from "@/lib/chunkArray";
+import Loader from "./loader";
 
 export default function TopSellingSheets() {
   const { data: sheets, isLoading: loadingSheets } = useQuery({
@@ -29,7 +29,15 @@ export default function TopSellingSheets() {
   });
   const pagePreferences = usePagePreferences();
 
-  if (loadingSheets) return <Skeleton className="h-32 w-full" />;
+  if (loadingSheets)
+    return (
+      <Loader className="h-fit w-full p-4 flex justify-center items-center">
+        <div className="grid grid-cols-[24px,1fr] gap-1 text-muted-foreground">
+          <Flame size={24} className="m-auto" />
+          <p className="my-auto">Top Selling Sheets</p>
+        </div>
+      </Loader>
+    );
   return (
     <Card className="shadow-none border-none">
       <CardHeader className="p-0">
