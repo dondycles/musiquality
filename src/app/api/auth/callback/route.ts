@@ -23,6 +23,7 @@ export async function GET(request: Request) {
             avatar_url: data.user.user_metadata.avatar_url,
             is_arranger: false,
             name: data.user.user_metadata.name,
+            is_applying: false,
           });
           await supabase.from("arranger_metadata").insert({
             avatar_url: data.user.user_metadata.avatar_url,
