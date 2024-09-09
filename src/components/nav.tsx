@@ -75,10 +75,17 @@ export default function Nav() {
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild>
-                  <Link href={"/arrangers-dashboard"}>
-                    <Music size={16} className="mr-1" />
-                    <span>Arranger&apos;s Dashboard</span>
-                  </Link>
+                  {userData.is_arranger !== true ? (
+                    <Link href={"/arranger"}>
+                      <Music size={16} className="mr-1" />
+                      <span>Apply as Arranger</span>
+                    </Link>
+                  ) : (
+                    <Link href={"/arrangers-dashboard"}>
+                      <Music size={16} className="mr-1" />
+                      <span>Arranger&apos;s Dashboard</span>
+                    </Link>
+                  )}
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={logOut}>
                   <LogOut size={16} className="mr-1" />

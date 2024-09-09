@@ -21,5 +21,6 @@ export const config = {
     "arrangers-dashboard",
     "library",
     "/",
+    "/arranger",
   ],
 };

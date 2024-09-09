@@ -10,6 +10,15 @@ export default async function ArrangersDashboard() {
   const { user } = (await supabase.auth.getUser()).data;
 
   if (!user) redirect("/login");
+
+  const { data: isArranger } = await supabase
+    .from("users")
+    .select("is_arranger")
+    .eq("id", user.id)
+    .single();
+
+  if (!isArranger?.is_arranger) redirect("/arranger");
+
   return (
     <div className="flex flex-col gap-4">
       <header className="flex flex-row gap-4 items-center border-b p-4 pt-0 px-4  lg:px-40 xl:px-64">

@@ -1,7 +1,6 @@
 "use client";
 import { createClient } from "@/utils/supabase/client";
 import { Session, User } from "@supabase/supabase-js";
-import { useRouter } from "next/navigation";
 import { createContext, useEffect, useState, useMemo } from "react";
 
 type InitialState = {
@@ -22,7 +21,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const supabase = createClient();
   const [state, setState] = useState(initialState);
   const [loading, setLoading] = useState(false);
-  const router = useRouter();
   useEffect(() => {
     if (loading) return;
 
@@ -35,12 +33,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
         if (sessionError)
           throw new Error(`Error fetching session: ${sessionError?.message}`);
 
-        if (!sessionData.session) return router.push("/login");
+        if (sessionData.session) {
+          const session = sessionData.session;
+          const user = session.user;
 
-        const session = sessionData.session;
-        const user = session.user;
-
-        setState({ user, session, isLoading: loading });
+          setState({ user, session, isLoading: loading });
+        }
       } catch (error) {
       } finally {
         setLoading(false);
