@@ -11,7 +11,7 @@ export default function LibraryMain() {
   if (userData)
     return (
       <div className="flex flex-col gap-4 px-4 lg:px-40 xl:px-64">
-        <h1 className="text-center text-sm text-muted-foreground">Library</h1>
+        <h1 className="text-sm text-muted-foreground">Library</h1>
         <LibrarySheets userData={userData} />
         <Separator />
         <Transactions userData={userData} />
