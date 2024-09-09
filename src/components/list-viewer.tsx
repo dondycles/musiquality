@@ -1,7 +1,5 @@
 "use client";
 
-import { usePagePreferences } from "@/../store";
-
 export default function ListViewer({
   children,
   length,
@@ -11,9 +9,11 @@ export default function ListViewer({
 }) {
   return (
     <div
-      className={`grid grid-cols-1 ${
-        length > 5 && "sm:grid-cols-2"
-      }  grid-rows-5 w-full h-fit gap-2`}
+      className={`${
+        length > 5
+          ? "grid grid-cols-1 sm:grid-cols-2 grid-rows-5 gap-2"
+          : "flex flex-col gap-2"
+      }   w-full h-fit `}
     >
       {children}
     </div>

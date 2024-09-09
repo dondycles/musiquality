@@ -12,13 +12,13 @@ export default async function uploadSheet(
     .from("sheets")
     .insert({
       title: data.title,
-      original_artist: data.original_artist,
-      instrument: data.instrument,
+      instruments_array: data.instrument,
       difficulty: data.difficulty,
       thumbnail_url: data.thumbnail_url,
       with_chords: data.with_chords,
       with_lyrics: data.with_lyrics,
       price: data.price,
+      og_artists_array: data.original_artist,
     })
     .select("id")
     .single();

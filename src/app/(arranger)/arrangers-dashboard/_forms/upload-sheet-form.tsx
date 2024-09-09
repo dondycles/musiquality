@@ -118,6 +118,7 @@ export default function UploadSheetForm({ arranger }: { arranger: string }) {
     uploadSheetForm.setValue("original_artist", [""]);
     uploadSheetForm.setValue("instrument", []);
     uploadSheetForm.reset();
+    console.log("entered");
   };
 
   useEffect(() => {
@@ -141,60 +142,59 @@ export default function UploadSheetForm({ arranger }: { arranger: string }) {
             name="sheet_url"
             render={({ field }) => (
               <FormItem className="self-stretch  flex items-center justify-center flex-col">
-                <FormControl>
-                  <>
-                    {field.value ? (
-                      <Dialog>
-                        <DialogTrigger className="flex-1 h-full">
-                          <div className="flex flex-col gap-1 flex-1  h-full">
-                            <SheetThumbnail
-                              className="border rounded-md overflow-hidden flex-1"
-                              _setThumbnailUrl={(url) => {
-                                uploadSheetForm.setValue("thumbnail_url", url);
-                              }}
-                              pdfUrl={field.value}
-                            />
-                            <Button
-                              className="mb-0 mt-auto"
-                              onClick={() =>
-                                uploadSheetForm.resetField("sheet_url")
-                              }
-                            >
-                              Remove
-                            </Button>
-                          </div>
-                        </DialogTrigger>
-                        <DialogContent className="p-4">
-                          <DialogHeader>
-                            <DialogTitle>Sheet Review</DialogTitle>
-                            <SheetViewer url={field.value} key={field.value} />
-                          </DialogHeader>
-                        </DialogContent>
-                      </Dialog>
-                    ) : (
-                      <UploadButton
-                        content={{
-                          button({ ready, isUploading }) {
-                            if (ready) return <Plus size={16} />;
-                            if (isUploading)
-                              return (
-                                <Loader size={16} className="animate-spin" />
-                              );
-                          },
-                        }}
-                        className="ut-button:bg-foreground ut-button:text-background ut-label:text-background flex rounded-md justify-normal p-2 mx-auto ut-button:size-9 "
-                        endpoint="sheet"
-                        onClientUploadComplete={(data) => {
-                          uploadSheetForm.setValue("sheet_url", data[0].url);
-                          setUploadingPdf(false);
-                        }}
-                        onUploadBegin={() => setUploadingPdf(true)}
-                        onUploadError={() => setUploadingPdf(false)}
-                        onUploadAborted={() => setUploadingPdf(false)}
-                      />
-                    )}
-                  </>
-                </FormControl>
+                <>
+                  {field.value ? (
+                    <Dialog>
+                      <DialogTrigger className="flex-1 h-full">
+                        <div className="flex flex-col gap-1 flex-1  h-full">
+                          <SheetThumbnail
+                            className="border rounded-md overflow-hidden flex-1"
+                            _setThumbnailUrl={(url) => {
+                              uploadSheetForm.setValue("thumbnail_url", url);
+                            }}
+                            pdfUrl={field.value}
+                          />
+                          <Button
+                            type="button"
+                            className="mb-0 mt-auto"
+                            onClick={() =>
+                              uploadSheetForm.resetField("sheet_url")
+                            }
+                          >
+                            Remove
+                          </Button>
+                        </div>
+                      </DialogTrigger>
+                      <DialogContent className="p-4">
+                        <DialogHeader>
+                          <DialogTitle>Sheet Review</DialogTitle>
+                          <SheetViewer url={field.value} key={field.value} />
+                        </DialogHeader>
+                      </DialogContent>
+                    </Dialog>
+                  ) : (
+                    <UploadButton
+                      content={{
+                        button({ ready, isUploading }) {
+                          if (ready) return <Plus size={16} />;
+                          if (isUploading)
+                            return (
+                              <Loader size={16} className="animate-spin" />
+                            );
+                        },
+                      }}
+                      className="ut-button:bg-foreground ut-button:text-background ut-label:text-background flex rounded-md justify-normal p-2 mx-auto ut-button:size-9 "
+                      endpoint="sheet"
+                      onClientUploadComplete={(data) => {
+                        uploadSheetForm.setValue("sheet_url", data[0].url);
+                        setUploadingPdf(false);
+                      }}
+                      onUploadBegin={() => setUploadingPdf(true)}
+                      onUploadError={() => setUploadingPdf(false)}
+                      onUploadAborted={() => setUploadingPdf(false)}
+                    />
+                  )}
+                </>
                 <FormMessage />
               </FormItem>
             )}

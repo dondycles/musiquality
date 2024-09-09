@@ -18,7 +18,7 @@ export async function generateMetadata({
 }: {
   params: { id: string };
 }): Promise<Metadata> {
-  const { data } = await getSheet(params.id);
+  const { data } = await getSheet(Number(params.id));
   return {
     title: `${data?.title} - Arranged by ${data?.users?.arranger_metadata?.display_name}`,
     openGraph: {
@@ -35,7 +35,7 @@ export async function generateMetadata({
 }
 
 export default async function Sheet({ params }: { params: { id: string } }) {
-  const { data } = await getSheet(params.id);
+  const { data } = await getSheet(Number(params.id));
 
   if (!data)
     return (
@@ -65,15 +65,11 @@ export default async function Sheet({ params }: { params: { id: string } }) {
               className="max-w-72 text-center sm:text-left"
               text={data.title}
             />
-            <SheetOGArtistText
-              artists={data.original_artist as original_artist}
-            />
+            <SheetOGArtistText artists={data.og_artists_array!} />
           </div>
           <div className="mb-0 mt-auto text-sm text-muted-foreground capitalize flex flex-col justify-center">
             <p>Other info:</p>
-            <SheetInstrumentsText
-              instruments={data.instrument as instruments}
-            />
+            <SheetInstrumentsText instruments={data.instruments_array!} />
             <p>{data.difficulty}</p>
             <p className="flex items-center ">
               {data.with_chords ? (

@@ -37,7 +37,7 @@ export default function SheetBar({ sheet }: { sheet: SheetData }) {
           </Link>
           <SheetOGArtistText
             className="text-xs"
-            artists={sheet.original_artist as original_artist}
+            artists={sheet.og_artists_array!}
           />
         </div>
         <AddToCartBtn

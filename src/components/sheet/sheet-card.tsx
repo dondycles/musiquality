@@ -68,7 +68,7 @@ export default function SheetCard({
             </Link>
             <SheetOGArtistText
               className="mb-2"
-              artists={sheet.original_artist as original_artist}
+              artists={sheet.og_artists_array!}
             />
             {urlDownload ? (
               <Button asChild className="mb-0 mt-auto">
