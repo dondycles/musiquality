@@ -19,7 +19,9 @@ export default function Transactions({ userData }: { userData: UserData }) {
   let _ = require("lodash");
   return (
     <div className="flex flex-col gap-4">
-      <p className="text-muted-foreground text-sm">Transactions</p>
+      <p className="text-muted-foreground text-sm">
+        Transactions ({userData.transactions.length})
+      </p>
       <Table>
         <TableHeader>
           <TableRow>
