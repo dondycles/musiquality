@@ -9,6 +9,7 @@ import Head from "next/head";
 import { ClassNameValue } from "tailwind-merge";
 import { cn } from "@/lib/utils";
 import { Button } from "../ui/button";
+import { Separator } from "../ui/separator";
 
 export default function SheetCard({
   sheet,
@@ -48,7 +49,7 @@ export default function SheetCard({
             />
           </CardContent>
         </Link>
-        <CardFooter className="flex flex-col gap-2 items-start h-full ">
+        <CardFooter className="flex flex-col gap-2 items-start h-full b">
           <div className="grid grid-cols-[16px,1fr] gap-1">
             <ArrangerAvatar
               arranger={sheet.users?.arranger_metadata?.user_id ?? ""}
@@ -66,10 +67,11 @@ export default function SheetCard({
               {sheet.title}
             </Link>
             <SheetOGArtistText
+              className="mb-2"
               artists={sheet.original_artist as original_artist}
             />
             {urlDownload ? (
-              <Button asChild className="mt-2">
+              <Button asChild className="mb-0 mt-auto">
                 <Link href={urlDownload}>View </Link>
               </Button>
             ) : (
