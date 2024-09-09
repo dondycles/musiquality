@@ -1,4 +1,3 @@
-import getSheet from "@/actions/get-sheet";
 import searchSheets from "@/actions/search-sheets";
 import ListViewer from "@/components/list-viewer";
 import SearchBar from "@/components/search-bar";
@@ -11,9 +10,6 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import { chunkArray } from "@/lib/chunkArray";
-import { SheetData } from "@/types/sheet-data";
-import { createClient } from "@/utils/supabase/server";
-import { Music } from "lucide-react";
 
 export default async function Search({
   searchParams,
