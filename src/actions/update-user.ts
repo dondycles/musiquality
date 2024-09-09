@@ -1,18 +1,15 @@
 "use server";
 
-import { arrangersMetadataSchema } from "@/types/arrangers-metadata";
+import { userDataSchema } from "@/types/user-data";
 import { createClient } from "@/utils/supabase/server";
 import { z } from "zod";
 
 export default async function updateUser(
-  metadata: z.infer<typeof arrangersMetadataSchema>,
+  data: z.infer<typeof userDataSchema>,
   id: string
 ) {
   const supabase = createClient();
-  const { error } = await supabase
-    .from("users")
-    .update(metadata)
-    .eq("user_id", id);
+  const { error } = await supabase.from("users").update(data).eq("id", id);
   if (error) return { error: error.message };
   return { success: "User updated!" };
 }

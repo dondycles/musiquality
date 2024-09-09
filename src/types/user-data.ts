@@ -1,6 +1,7 @@
 import { type User } from "@supabase/supabase-js";
 import { type Database } from "@/../../database.types";
 import { SheetData } from "./sheet-data";
+import { z } from "zod";
 
 export type UserData = User &
   Database["public"]["Tables"]["users"]["Row"] & {
@@ -42,3 +43,7 @@ export type UserData = User &
 
 // const userData : UserData = {}
 //   {userData.library.map((item) => item.sheets?.sheets_url?.url)}
+export const userDataSchema = z.object({
+  name: z.string().min(1),
+  avatar_url: z.string().url(),
+});

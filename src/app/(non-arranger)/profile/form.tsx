@@ -1,7 +1,5 @@
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-
-import { z } from "zod";
+import updateUser from "@/actions/update-user";
+import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
@@ -10,17 +8,18 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 import { useToast } from "@/components/ui/use-toast";
-import { useQueryClient } from "@tanstack/react-query";
+import UserAvatar from "@/components/user-avatar";
+import { UserData, userDataSchema } from "@/types/user-data";
 import { UploadButton } from "@/utils/uploadthing";
-import { useEffect } from "react";
-import { arrangersMetadataSchema } from "@/types/arrangers-metadata";
-import { type UserData } from "@/types/user-data";
-import updateArranger from "@/actions/update-arranger";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useQueryClient } from "@tanstack/react-query";
 import { Plus } from "lucide-react";
-import ArrangerAvatar from "@/components/arranger/avatar";
-export default function UpdateForm({
+import { useEffect } from "react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+
+export default function ProfileForm({
   userData,
   closeForm,
   setImageUploading,
@@ -35,27 +34,20 @@ export default function UpdateForm({
   changes: {
     name: boolean;
     avatar: boolean;
-    description: boolean;
   };
-  setChanges: (state: {
-    name: boolean;
-    avatar: boolean;
-    description: boolean;
-  }) => void;
+  setChanges: (state: { name: boolean; avatar: boolean }) => void;
 }) {
   const { toast } = useToast();
   const queryClient = useQueryClient();
-  const updateArrangerForm = useForm<z.infer<typeof arrangersMetadataSchema>>({
-    resolver: zodResolver(arrangersMetadataSchema),
+  const updateUserForm = useForm<z.infer<typeof userDataSchema>>({
+    resolver: zodResolver(userDataSchema),
     defaultValues: {
-      display_name: userData?.arranger_metadata?.display_name,
-      avatar_url: userData?.arranger_metadata?.avatar_url ?? "/favicon.ico",
-      description: userData?.arranger_metadata?.description!,
+      avatar_url: userData.avatar_url ?? "/favicon.ico",
+      name: userData.name ?? "",
     },
   });
-  const handleUpdate = async (
-    data: z.infer<typeof arrangersMetadataSchema>
-  ) => {
+
+  const handleUpdate = async (data: z.infer<typeof userDataSchema>) => {
     if (imageUploading)
       return toast({
         title: "Error!",
@@ -63,9 +55,8 @@ export default function UpdateForm({
         variant: "destructive",
         duration: 3000,
       });
-    const { error } = await updateArranger(data, userData.id);
-    if (error)
-      return updateArrangerForm.setError("display_name", { message: error });
+    const { error } = await updateUser(data, userData.id);
+    if (error) return updateUserForm.setError("name", { message: error });
     toast({
       title: "Success!",
       description: "successfully updated!",
@@ -74,44 +65,30 @@ export default function UpdateForm({
     queryClient.invalidateQueries({ queryKey: ["user", userData.id] });
     closeForm();
   };
+
   useEffect(() => {
-    if (
-      updateArrangerForm.watch("display_name") !==
-      userData.arranger_metadata?.display_name
-    ) {
+    if (updateUserForm.watch("name") !== userData.name) {
       setChanges({ ...changes, name: true });
     } else {
       setChanges({ ...changes, name: false });
     }
-    if (
-      updateArrangerForm.watch("description") !==
-      userData.arranger_metadata?.description
-    ) {
-      setChanges({ ...changes, description: true });
-    } else {
-      setChanges({ ...changes, description: false });
-    }
-  }, [
-    updateArrangerForm.watch("display_name"),
-    userData.arranger_metadata?.display_name,
-    updateArrangerForm.watch("description"),
-    userData.arranger_metadata?.description,
-  ]);
+  }, [updateUserForm.watch("name"), userData.name]);
+
   return (
-    <Form {...updateArrangerForm}>
+    <Form {...updateUserForm}>
       <form
-        onSubmit={updateArrangerForm.handleSubmit(handleUpdate)}
+        onSubmit={updateUserForm.handleSubmit(handleUpdate)}
         className="flex flex-col gap-4"
       >
         <FormField
-          control={updateArrangerForm.control}
+          control={updateUserForm.control}
           name="avatar_url"
           render={({ field }) => (
             <FormItem className="flex-1 flex flex-col items-center gap-4 w-fit mx-auto relative aspect-square">
-              <ArrangerAvatar
+              <UserAvatar
                 className="rounded-md size-32"
                 url={field.value}
-                arranger={userData.id}
+                user={userData.id}
               />
               <UploadButton
                 content={{
@@ -128,7 +105,7 @@ export default function UpdateForm({
                 onClientUploadComplete={(data) => {
                   setImageUploading(false);
                   setChanges({ ...changes, avatar: true });
-                  updateArrangerForm.setValue("avatar_url", data[0].url);
+                  updateUserForm.setValue("avatar_url", data[0].url);
                 }}
                 onUploadError={(e) => {
                   toast({
@@ -154,8 +131,8 @@ export default function UpdateForm({
           )}
         />
         <FormField
-          control={updateArrangerForm.control}
-          name="display_name"
+          control={updateUserForm.control}
+          name="name"
           render={({ field }) => (
             <FormItem className="flex-1">
               <FormControl>
@@ -169,26 +146,10 @@ export default function UpdateForm({
             </FormItem>
           )}
         />
-        <FormField
-          control={updateArrangerForm.control}
-          name="description"
-          render={({ field }) => (
-            <FormItem>
-              <Input
-                placeholder={
-                  !userData.arranger_metadata?.description
-                    ? "Short description about you"
-                    : userData.arranger_metadata?.description
-                }
-                {...field}
-              />
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+
         <Button
           type="submit"
-          disabled={imageUploading || updateArrangerForm.formState.isSubmitting}
+          disabled={imageUploading || updateUserForm.formState.isSubmitting}
           className="disabled"
         >
           Update
