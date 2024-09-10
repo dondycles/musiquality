@@ -13,7 +13,7 @@ export default function ListViewer({
         length > 5
           ? "grid grid-cols-1 sm:grid-cols-2 grid-rows-5 gap-2"
           : "flex flex-col gap-2"
-      }   w-full h-fit `}
+      }   w-full h-fit`}
     >
       {children}
     </div>
