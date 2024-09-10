@@ -89,7 +89,7 @@ export default async function Sheet({ params }: { params: { id: string } }) {
             </p>
 
             <Separator className="my-2" />
-            <AddToCartBtn key={data.id} sheet={data} />
+            <AddToCartBtn key={data.id} sheet={{ ...data, sheets_url: null }} />
           </div>
         </div>
         <SheetThumbnail
