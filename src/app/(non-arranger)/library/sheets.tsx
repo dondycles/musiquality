@@ -1,7 +1,11 @@
+import { UserDataTypes } from "@/actions/get-user";
 import SheetCard from "@/components/sheet/sheet-card";
-import { UserData } from "@/types/user-data";
 
-export default function LibrarySheets({ userData }: { userData: UserData }) {
+export default function LibrarySheets({
+  userData,
+}: {
+  userData: UserDataTypes;
+}) {
   return (
     <div className="flex flex-col gap-4">
       <p className="text-muted-foreground text-sm">

@@ -1,5 +1,6 @@
 "use client";
 
+import { UserDataTypes } from "@/actions/get-user";
 import CurrencyText from "@/components/currency-text";
 import {
   Table,
@@ -9,13 +10,16 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { UserData } from "@/types/user-data";
 
 type metadata = {
   price: number;
   id: string;
 };
-export default function Transactions({ userData }: { userData: UserData }) {
+export default function Transactions({
+  userData,
+}: {
+  userData: UserDataTypes;
+}) {
   let _ = require("lodash");
   return (
     <div className="flex flex-col gap-4">
