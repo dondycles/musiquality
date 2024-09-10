@@ -33,7 +33,7 @@ export default function ArrangerMain({
             followers={arranger.arranger_followers.length}
             sheets={arranger.sheets.length}
           />
-          {!isLoading && userData && (
+          {!isLoading && userData && userData.id !== arranger.user_id && (
             <ArrangerFollowBtn
               followed={isFollowed}
               user_id={userData.id}
