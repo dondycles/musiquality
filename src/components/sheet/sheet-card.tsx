@@ -12,11 +12,9 @@ import { Button } from "../ui/button";
 export default function SheetCard({
   sheet,
   className,
-  urlDownload,
 }: {
   sheet: SheetData;
   className?: ClassNameValue;
-  urlDownload?: string;
 }) {
   return (
     <Card
@@ -54,9 +52,9 @@ export default function SheetCard({
             className="mb-2"
             artists={sheet.og_artists_array!}
           />
-          {urlDownload ? (
+          {sheet.sheets_url ? (
             <Button asChild className="mb-0 mt-auto">
-              <Link href={urlDownload}>View </Link>
+              <Link href={sheet.sheets_url.url}>View </Link>
             </Button>
           ) : (
             <AddToCartBtn key={sheet.id} sheet={sheet} />

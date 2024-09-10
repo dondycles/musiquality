@@ -3,6 +3,7 @@ import { SheetData } from "@/types/sheet-data";
 import SheetOGArtistText from "./sheet-og-artists-text";
 import AddToCartBtn from "../add-to-cart-btn";
 import Link from "next/link";
+import { Button } from "../ui/button";
 
 export default function SheetBar({ sheet }: { sheet: SheetData }) {
   return (
@@ -25,13 +26,19 @@ export default function SheetBar({ sheet }: { sheet: SheetData }) {
           artists={sheet.og_artists_array!}
         />
       </div>
-      <AddToCartBtn
-        key={sheet.id}
-        branded={false}
-        containerClassName="w-fit my-auto ml-auto mr-0"
-        textClassName="text-sm sm:text-sm md:text-base"
-        sheet={sheet}
-      />
+      {sheet.sheets_url ? (
+        <Button asChild className="ml-auto mr-0">
+          <Link href={sheet.sheets_url.url}>View </Link>
+        </Button>
+      ) : (
+        <AddToCartBtn
+          key={sheet.id}
+          branded={false}
+          containerClassName="w-fit my-auto ml-auto mr-0"
+          textClassName="text-sm sm:text-sm md:text-base"
+          sheet={sheet}
+        />
+      )}
     </div>
   );
 }

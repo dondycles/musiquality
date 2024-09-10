@@ -9,7 +9,5 @@ export const getIsFollowed = (
     (ar) => ar.arranger_metadata?.user_id === arranger_id
   );
 
-  console.log(userData.arranger_followers.map((ar) => ar.arranger_id));
-  console.log(arranger_id);
   return isFollowed !== undefined;
 };

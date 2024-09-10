@@ -19,6 +19,7 @@ import GridViewer from "./list-viewer";
 import Loader from "./loader";
 import { useContext } from "react";
 import { UserDataContext } from "./user-data-provider";
+import PageViewToggleBtn from "./page-view-toggle-btn";
 export default function TopArrangers() {
   const pagePreferences = usePagePreferences();
   const { isLoading, userData } = useContext(UserDataContext);
@@ -48,33 +49,10 @@ export default function TopArrangers() {
             <Flame size={24} className="m-auto" />
             <p className="my-auto">Top Arrangers</p>
           </div>
-          <Button
-            onClick={() => pagePreferences.setTopArrangersView()}
-            size={"icon"}
-            variant={"ghost"}
-          >
-            {pagePreferences.topArrangersView === "col" && (
-              <motion.div
-                key={"col"}
-                initial={{ rotate: 90, scale: 0.75 }}
-                animate={{ rotate: 0, scale: 1 }}
-                exit={{ rotate: -90, scale: 0.75 }}
-              >
-                <Rows3 size={16} />
-              </motion.div>
-            )}
-
-            {pagePreferences.topArrangersView === "row" && (
-              <motion.div
-                key={"row"}
-                initial={{ rotate: 90, scale: 0.75 }}
-                animate={{ rotate: 0, scale: 1 }}
-                exit={{ rotate: -90, scale: 0.75 }}
-              >
-                <Columns3 size={16} />
-              </motion.div>
-            )}
-          </Button>
+          <PageViewToggleBtn
+            view={pagePreferences.topArrangersView}
+            action={() => pagePreferences.setTopArrangersView()}
+          />
         </CardTitle>
       </CardHeader>
       <CardContent className="p-0 pb-3 mt-3">

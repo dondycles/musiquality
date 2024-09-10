@@ -1,23 +1,13 @@
 "use client";
 import { Card, CardContent, CardHeader, CardTitle } from "./ui/card";
-import {
-  Carousel,
-  CarouselContent,
-  CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
-} from "./ui/carousel";
+
 import { useQuery } from "@tanstack/react-query";
 import getSheets from "@/actions/get-sheets";
-import SheetCard from "./sheet/sheet-card";
-import { Button } from "./ui/button";
-import { Columns3, Flame, Rows3 } from "lucide-react";
-import SheetBar from "./sheet/sheet-bar";
-import { motion } from "framer-motion";
+import { Flame } from "lucide-react";
 import { usePagePreferences } from "../../store";
-import GridViewer from "./list-viewer";
-import { chunkArray } from "@/lib/chunkArray";
 import Loader from "./loader";
+import PageViewToggleBtn from "./page-view-toggle-btn";
+import SheetsDisplayer from "./sheet/sheets-displayer";
 
 export default function TopSellingSheets() {
   const { data: sheets, isLoading: loadingSheets } = useQuery({
@@ -46,91 +36,22 @@ export default function TopSellingSheets() {
             <Flame size={24} className="m-auto" />
             <p className="my-auto">Top Selling Sheets</p>
           </div>
-          <Button
-            onClick={() => pagePreferences.setTopSellingSheetsView()}
-            size={"icon"}
-            variant={"ghost"}
-          >
-            {pagePreferences.topSellingSheetsView === "col" && (
-              <motion.div
-                key={"col"}
-                initial={{ rotate: 90, scale: 0.75 }}
-                animate={{ rotate: 0, scale: 1 }}
-                exit={{ rotate: -90, scale: 0.75 }}
-              >
-                <Rows3 size={16} />
-              </motion.div>
-            )}
-
-            {pagePreferences.topSellingSheetsView === "row" && (
-              <motion.div
-                key={"row"}
-                initial={{ rotate: 90, scale: 0.75 }}
-                animate={{ rotate: 0, scale: 1 }}
-                exit={{ rotate: -90, scale: 0.75 }}
-              >
-                <Columns3 size={16} />
-              </motion.div>
-            )}
-          </Button>
+          <PageViewToggleBtn
+            view={pagePreferences.topSellingSheetsView}
+            action={() => pagePreferences.setTopSellingSheetsView()}
+          />
         </CardTitle>
       </CardHeader>
       <CardContent className="p-0 pb-3 mt-3">
-        {pagePreferences.topSellingSheetsView === "col" && (
-          <Carousel
-            opts={{
-              align: "start",
-              slidesToScroll: 1,
-              dragFree: true,
-            }}
-          >
-            <CarouselContent>
-              {sheets?.map((sheet) => (
-                <CarouselItem
-                  key={sheet.id}
-                  className="max-w-fit w-fit min-w-fit"
-                >
-                  <SheetCard sheet={sheet} key={sheet.id} />
-                </CarouselItem>
-              ))}
-            </CarouselContent>
-            <div className="flex gap-4 items-center justify-center mt-3">
-              <CarouselPrevious />
-              <CarouselNext />
-            </div>
-          </Carousel>
-        )}
-        {pagePreferences.topSellingSheetsView === "row" && (
-          <Carousel
-            opts={{
-              align: "start",
-              slidesToScroll: 1,
-              dragFree: true,
-            }}
-          >
-            <CarouselContent>
-              {sheets &&
-                chunkArray(sheets, 10).map((sheet, index) => {
-                  return (
-                    <CarouselItem
-                      key={`chunked-top-selling-${index}`}
-                      className="basis-full"
-                    >
-                      <GridViewer length={sheet.length}>
-                        {sheet.map((sheet) => (
-                          <SheetBar sheet={sheet} key={sheet.id} />
-                        ))}
-                      </GridViewer>
-                    </CarouselItem>
-                  );
-                })}
-            </CarouselContent>
-            <div className="flex gap-4 items-center justify-center mt-3">
-              <CarouselPrevious />
-              <CarouselNext />
-            </div>
-          </Carousel>
-        )}
+        <SheetsDisplayer
+          view={pagePreferences.topSellingSheetsView}
+          sheets={
+            sheets?.flatMap((sheets) => ({
+              ...sheets,
+              sheets_url: null,
+            }))!
+          }
+        />
       </CardContent>
     </Card>
   );

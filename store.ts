@@ -54,12 +54,14 @@ export const useCartStore = create<Cart>()(
     { name: "cart", storage: createJSONStorage(() => storage) }
   )
 );
-
+export type View = "row" | "col";
 type PagePreferences = {
-  topSellingSheetsView: "row" | "col";
+  topSellingSheetsView: View;
   setTopSellingSheetsView: () => void;
-  topArrangersView: "row" | "col";
+  topArrangersView: View;
   setTopArrangersView: () => void;
+  librarySheetsView: View;
+  setLibrarySheetsView: () => void;
 };
 
 export const usePagePreferences = create<PagePreferences>()(
@@ -78,6 +80,14 @@ export const usePagePreferences = create<PagePreferences>()(
         set((state) => {
           return {
             topArrangersView: state.topArrangersView === "col" ? "row" : "col",
+          };
+        }),
+      librarySheetsView: "col",
+      setLibrarySheetsView: () =>
+        set((state) => {
+          return {
+            librarySheetsView:
+              state.librarySheetsView === "col" ? "row" : "col",
           };
         }),
     }),

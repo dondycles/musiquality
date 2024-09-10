@@ -36,30 +36,34 @@ export default function Transactions({
           </TableRow>
         </TableHeader>
         <TableBody>
-          {userData.transactions.map((trans, i) => {
-            return (
-              <TableRow key={trans.id} className="w-full text-xs">
-                {/* {(trans.metadata as metadata[]).map((sheet: metadata) => {
-                return <span key={sheet.id}>{sheet.id}</span>;
-              })} */}
-                <TableCell>{trans.payment_intent_id}</TableCell>
-                <TableCell>{trans.status}</TableCell>
-                <TableCell>
-                  <CurrencyText
-                    branded={false}
-                    amount={_.sum(
-                      (trans.metadata as metadata[]).map(
-                        (sheet: metadata) => sheet.price
-                      )
-                    )}
-                  />
-                </TableCell>
-                <TableCell>
-                  {new Date(trans.created_at).toLocaleString()}
-                </TableCell>
-              </TableRow>
-            );
-          })}
+          {userData.transactions
+            .toSorted(
+              (a, b) =>
+                new Date(a.created_at).getTime() -
+                new Date(b.created_at).getTime()
+            )
+            .toReversed()
+            .map((trans, i) => {
+              return (
+                <TableRow key={trans.id} className="w-full text-xs">
+                  <TableCell>{trans.payment_intent_id}</TableCell>
+                  <TableCell>{trans.status}</TableCell>
+                  <TableCell>
+                    <CurrencyText
+                      branded={false}
+                      amount={_.sum(
+                        (trans.metadata as metadata[]).map(
+                          (sheet: metadata) => sheet.price
+                        )
+                      )}
+                    />
+                  </TableCell>
+                  <TableCell>
+                    {new Date(trans.created_at).toLocaleString()}
+                  </TableCell>
+                </TableRow>
+              );
+            })}
         </TableBody>
       </Table>
     </div>
