@@ -21,7 +21,7 @@ export default async function searchSheets(term: string) {
     if (!sheets) return [];
     for (const sheet of sheets) {
       const { data } = await getSheet(sheet);
-      if (data) newData.push(data);
+      if (data) newData.push({ ...data, sheets_url: null });
     }
     return newData ?? [];
   };
