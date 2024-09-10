@@ -42,17 +42,17 @@ export default function TopSellingSheets() {
           />
         </CardTitle>
       </CardHeader>
-      <CardContent className="p-0 pb-3 mt-3">
-        <SheetsDisplayer
-          view={pagePreferences.topSellingSheetsView}
-          sheets={
-            sheets?.flatMap((sheets) => ({
+      {sheets && (
+        <CardContent className="p-0 pb-3 mt-3">
+          <SheetsDisplayer
+            view={pagePreferences.topSellingSheetsView}
+            sheets={sheets?.flatMap((sheets) => ({
               ...sheets,
               sheets_url: null,
-            }))!
-          }
-        />
-      </CardContent>
+            }))}
+          />
+        </CardContent>
+      )}
     </Card>
   );
 }
