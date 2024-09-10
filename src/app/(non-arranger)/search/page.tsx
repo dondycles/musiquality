@@ -10,6 +10,7 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import { chunkArray } from "@/lib/chunkArray";
+import { Suspense } from "react";
 
 export default async function Search({
   searchParams,
@@ -25,8 +26,9 @@ export default async function Search({
       <h1 className="text-sm text-muted-foreground text-center">
         Searching for &quot;{searchParams.term}&quot;
       </h1>
-      <SearchBar />
-
+      <Suspense>
+        <SearchBar />
+      </Suspense>
       <Carousel
         opts={{
           align: "start",
