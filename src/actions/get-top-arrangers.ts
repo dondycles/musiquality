@@ -6,7 +6,7 @@ export default async function getTopArrangers() {
   const supabase = createClient();
   const { data, error } = await supabase
     .from("arranger_metadata")
-    .select("*, sheets(id), arranger_followers(*, users(*))");
+    .select("*, sheets(count), arranger_followers(*, users(*))");
   if (error) {
     return { error: error.message };
   }

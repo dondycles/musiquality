@@ -9,7 +9,7 @@ export default async function getUser(authData: User) {
   const { data: dbData, error: dbError } = await supabase
     .from("users")
     .select(
-      "*, arranger_followers(*, arranger_metadata(*)), arranger_metadata(*, sheets(*), arranger_followers(*, users(*))), transactions(*, library(*, sheets(*, sheets_url(*), arranger_metadata(*))))"
+      "*, arranger_followers(*, arranger_metadata(*, sheets(count), arranger_followers(*, users(*)))), arranger_metadata(*, sheets(*), arranger_followers(*, users(*))), transactions(*, library(*, sheets(*, sheets_url(*), arranger_metadata(*))))"
     )
     .eq("id", authData.id)
     .single();

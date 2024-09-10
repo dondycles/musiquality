@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Pencil } from "lucide-react";
+import ArrangerBar from "@/components/arranger/bar";
 
 export default function ProfileMain() {
   const { isLoading, userData } = useContext(UserDataContext);
@@ -83,6 +84,22 @@ export default function ProfileMain() {
             </div>
           </div>
         </div>
+        <div className="flex flex-col gap-4 w-full">
+          <p className="text-sm text-muted-foreground w-full">
+            Followed Artists
+          </p>
+          {userData.arranger_followers.map((ar) => {
+            if (ar.arranger_metadata)
+              return (
+                <ArrangerBar
+                  key={ar.id}
+                  arranger={ar.arranger_metadata}
+                  current_user={userData}
+                />
+              );
+          })}
+        </div>
+
         {/* warning dialog */}
         <Dialog
           key={"warningDialog"}
