@@ -79,17 +79,13 @@ export default function TabsSection({ userData }: { userData: UserData }) {
         </div>
       </TabsContent>
       <TabsContent value="sheets">
-        <ListViewer length={userData.sheets.length}>
-          {userData.sheets.map((sheet) => {
+        <ListViewer length={userData.arranger_metadata?.sheets.length ?? 0}>
+          {userData.arranger_metadata?.sheets.map((sheet) => {
             return (
               <SheetBar
                 sheet={{
                   ...sheet,
-                  arranger: userData.id,
-                  users: {
-                    id: userData.id,
-                    arranger_metadata: userData.arranger_metadata,
-                  },
+                  arranger_metadata: userData.arranger_metadata!,
                 }}
                 key={sheet.id}
               />

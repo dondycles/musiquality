@@ -49,6 +49,7 @@ import { useToast } from "@/components/ui/use-toast";
 import Link from "next/link";
 import { ToastAction } from "@/components/ui/toast";
 import { Separator } from "@/components/ui/separator";
+import { useQueryClient } from "@tanstack/react-query";
 
 export const uploadSheetSchema = z.object({
   title: z.string(),
@@ -64,6 +65,7 @@ export const uploadSheetSchema = z.object({
 });
 
 export default function UploadSheetForm({ arranger }: { arranger: string }) {
+  const queryClient = useQueryClient();
   const uploadSheetForm = useForm<z.infer<typeof uploadSheetSchema>>({
     resolver: zodResolver(uploadSheetSchema),
     defaultValues: {
@@ -118,7 +120,9 @@ export default function UploadSheetForm({ arranger }: { arranger: string }) {
     uploadSheetForm.setValue("original_artist", [""]);
     uploadSheetForm.setValue("instrument", []);
     uploadSheetForm.reset();
-    console.log("entered");
+    queryClient.invalidateQueries({
+      queryKey: ["user", arranger],
+    });
   };
 
   useEffect(() => {

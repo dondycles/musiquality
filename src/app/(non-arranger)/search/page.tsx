@@ -19,6 +19,7 @@ export default async function Search({
   const { success: sheets, error } = await searchSheets(searchParams.term);
   if (error)
     return <p className="text-muted-foreground text-sm text-center">{error}</p>;
+
   return (
     <div className="flex flex-col gap-4 px-4 lg:px-40 xl:px-64">
       <h1 className="text-sm text-muted-foreground text-center">
@@ -34,8 +35,8 @@ export default async function Search({
         }}
       >
         <CarouselContent className="h-fit min-h-fit ">
-          {sheets.length > 0 ? (
-            chunkArray(sheets, 10).map((sheet, index) => {
+          {sheets!.length > 0 ? (
+            chunkArray(sheets!, 10).map((sheet, index) => {
               return (
                 <CarouselItem
                   key={`chunked-search-sheet-${index}`}

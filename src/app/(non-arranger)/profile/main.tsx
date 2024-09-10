@@ -8,6 +8,7 @@ import ProfileForm from "./form";
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -82,6 +83,45 @@ export default function ProfileMain() {
             </div>
           </div>
         </div>
+        {/* warning dialog */}
+        <Dialog
+          key={"warningDialog"}
+          open={showDialogWarning}
+          onOpenChange={setShowDialogWarning}
+        >
+          <DialogContent className="w-80 p-4">
+            <DialogHeader>
+              <DialogTitle>Discard changes?</DialogTitle>
+              <DialogDescription>
+                Changes are not saved. Discard it?
+              </DialogDescription>
+            </DialogHeader>
+            <div className="flex gap-4 ">
+              <Button
+                variant={"destructive"}
+                className="flex-1"
+                onClick={() => {
+                  setShowDialogWarning(false);
+                  setChanges({
+                    avatar: false,
+                    name: false,
+                  });
+                  setOpenForm(false);
+                }}
+              >
+                Discard
+              </Button>
+              <Button
+                className="flex-1"
+                onClick={() => {
+                  setShowDialogWarning(false);
+                }}
+              >
+                Back
+              </Button>
+            </div>
+          </DialogContent>
+        </Dialog>
       </div>
     );
 }

@@ -157,7 +157,7 @@ export default function SideCart({
                               text={sheet.title}
                             />
                             <p className="text-muted-foreground text-xs  line-clamp-1">
-                              {sheet.users?.arranger_metadata?.display_name}
+                              {sheet.arranger_metadata?.display_name}
                             </p>
                             <CurrencyText
                               className="mt-auto mb-0 text-xl sm:text-2xl md:text-2xl "

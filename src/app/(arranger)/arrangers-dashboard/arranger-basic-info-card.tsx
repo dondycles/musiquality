@@ -95,7 +95,7 @@ export default function ArrangerBasicInfoCard({
         <ArrangerBadges
           className="flex-wrap mx-auto"
           followers={123}
-          sheets={userData.sheets.length}
+          sheets={userData.arranger_metadata?.sheets.length}
         />
       </div>
       {/* warning dialog */}
