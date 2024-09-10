@@ -56,7 +56,7 @@ export default function AddToCartBtn({
           amount={sheet.price}
         />
       )}
-      {!isArranger && (
+      {!isArranger && !isBought && (
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger asChild>
@@ -78,15 +78,6 @@ export default function AddToCartBtn({
                     exit={{ rotate: -90, scale: 0.75 }}
                   >
                     <X size={16} />
-                  </motion.div>
-                ) : isBought ? (
-                  <motion.div
-                    key={"bought"}
-                    initial={{ rotate: 90, scale: 0.75 }}
-                    animate={{ rotate: 0, scale: 1 }}
-                    exit={{ rotate: -90, scale: 0.75 }}
-                  >
-                    <Check className="text-green-500" />
                   </motion.div>
                 ) : (
                   <motion.div
