@@ -86,6 +86,7 @@ export default function TabsSection({ userData }: { userData: UserDataTypes }) {
                 sheet={{
                   ...sheet,
                   arranger_metadata: userData.arranger_metadata!,
+                  sheets_url: null,
                 }}
                 key={sheet.id}
               />
