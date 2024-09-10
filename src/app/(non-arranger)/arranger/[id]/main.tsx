@@ -49,7 +49,11 @@ export default function ArrangerMain({
           return (
             <SheetBar
               key={sheet.id}
-              sheet={{ ...sheet, arranger_metadata: arranger }}
+              sheet={{
+                ...sheet,
+                arranger_metadata: arranger,
+                sheets_url: null,
+              }}
             />
           );
         })}
