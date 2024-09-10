@@ -3,10 +3,7 @@ import { SheetData } from "./sheet-data";
 
 export type ArrangerData =
   Database["public"]["Tables"]["arranger_metadata"]["Row"] & {
-    users: {
-      id: Database["public"]["Tables"]["users"]["Row"]["id"];
-      sheets: Pick<Database["public"]["Tables"]["sheets"]["Row"], "id">[];
-    } | null;
+    sheets: Pick<Database["public"]["Tables"]["sheets"]["Row"], "id">[];
   };
 
 export type SingleArrangerData =

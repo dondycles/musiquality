@@ -7,13 +7,17 @@ import getSheet from "./get-sheet";
 export default async function searchSheets(term: string) {
   const supabase = createClient();
 
-  const { data: sheetsByTitle, error: sheetsByTitleError } = await supabase
+  const {
+    data: sheetsByTitleAndArranger,
+    error: sheetsByTitleAndArrangerError,
+  } = await supabase
     .from("sheets")
-    .select("*, users(id, arranger_metadata(*))")
-    .ilike("title", `%${term}%`);
+    .select("*, arranger_metadata(*)")
+    .ilike("title", `%${term}%`)
+    .ilike("users.", `%${term}%`);
 
-  if (sheetsByTitleError)
-    return { error: sheetsByTitleError.message, success: [] };
+  if (sheetsByTitleAndArrangerError)
+    return { error: sheetsByTitleAndArrangerError.message, success: [] };
 
   const { data: sheetsByArtist, error: sheetsByArtistError } =
     await supabase.rpc("search_sheets_by_artist", {
@@ -32,6 +36,9 @@ export default async function searchSheets(term: string) {
     }
     return newData;
   };
-  const sheets = [...(sheetsByTitle ?? []), ...(await getSheetByArtist())];
+  const sheets = [
+    ...(sheetsByTitleAndArranger ?? []),
+    ...(await getSheetByArtist()),
+  ];
   return { success: sheets };
 }

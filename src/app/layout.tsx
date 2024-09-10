@@ -4,7 +4,7 @@ import "./globals.css";
 import QueryProvider from "@/components/query-provider";
 import { NextSSRPlugin } from "@uploadthing/react/next-ssr-plugin";
 import { extractRouterConfig } from "uploadthing/server";
-
+import NextTopLoader from "nextjs-toploader";
 import { ourFileRouter } from "@/app/api/uploadthing/core";
 import { Toaster } from "@/components/ui/toaster";
 import { AuthProvider } from "@/components/auth-provider";
@@ -35,18 +35,13 @@ export default function RootLayout({
       <body
         className={`${gloock.variable} ${poppins.variable} font-poppins bg-background text-foreground`}
       >
-        <NextSSRPlugin
-          /**
-           * The `extractRouterConfig` will extract **only** the route configs
-           * from the router to prevent additional information from being
-           * leaked to the client. The data passed to the client is the same
-           * as if you were to fetch `/api/uploadthing` directly.
-           */
-          routerConfig={extractRouterConfig(ourFileRouter)}
-        />
+        <NextSSRPlugin routerConfig={extractRouterConfig(ourFileRouter)} />
         <QueryProvider>
           <AuthProvider>
-            <UserDataProvider>{children}</UserDataProvider>
+            <UserDataProvider>
+              <NextTopLoader zIndex={5000} color="#000000" showAtBottom />
+              {children}
+            </UserDataProvider>
           </AuthProvider>
         </QueryProvider>
         <Toaster />

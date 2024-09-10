@@ -29,11 +29,7 @@ export default function ArrangerMain({
           return (
             <SheetBar
               key={sheet.id}
-              sheet={{
-                ...sheet,
-                arranger: arranger.user_id,
-                users: { id: arranger.user_id, arranger_metadata: arranger },
-              }}
+              sheet={{ ...sheet, arranger_metadata: arranger }}
             />
           );
         })}

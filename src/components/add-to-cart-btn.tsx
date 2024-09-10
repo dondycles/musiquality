@@ -31,7 +31,6 @@ export default function AddToCartBtn({
 }) {
   const { userData, isLoading } = useContext(UserDataContext);
   const cart = useCartStore();
-
   const isBought =
     !isLoading &&
     Boolean(userData?.library.find((item) => item.sheets?.id === sheet.id));
@@ -39,7 +38,7 @@ export default function AddToCartBtn({
   const isCarted =
     !isLoading && Boolean(cart.cart.find((item) => item.id === sheet.id));
 
-  const isArranger = Boolean(sheet.arranger === userData?.id);
+  const isArranger = Boolean(sheet.arranger_id === userData?.id);
 
   return (
     <div

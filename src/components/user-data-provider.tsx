@@ -7,7 +7,6 @@ import { useQuery } from "@tanstack/react-query";
 type InitialState = { userData: UserData | null; isLoading: boolean };
 
 const initialState: InitialState = { userData: null, isLoading: true };
-
 export const UserDataContext = createContext<InitialState>(initialState);
 
 export function UserDataProvider({ children }: { children: React.ReactNode }) {
@@ -28,7 +27,6 @@ export function UserDataProvider({ children }: { children: React.ReactNode }) {
 
   if (!isLoading && !authLoading && data === null)
     throw new Error("No data found!");
-
   return (
     <UserDataContext.Provider
       value={{ isLoading, userData: data === undefined ? null : data }}

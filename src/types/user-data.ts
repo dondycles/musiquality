@@ -6,9 +6,11 @@ import { z } from "zod";
 export type UserData = User &
   Database["public"]["Tables"]["users"]["Row"] & {
     arranger_metadata:
-      | Database["public"]["Tables"]["arranger_metadata"]["Row"]
+      | (Database["public"]["Tables"]["arranger_metadata"]["Row"] & {
+          sheets: Database["public"]["Tables"]["sheets"]["Row"][];
+        })
       | null
-      | undefined; // matches arranger_metadata(*)
+      | undefined;
   } & {
     transactions: Array<
       Database["public"]["Tables"]["transactions"]["Row"] & {
@@ -38,7 +40,6 @@ export type UserData = User &
           | null;
       }
     >;
-    sheets: Database["public"]["Tables"]["sheets"]["Row"][];
   };
 
 // const userData : UserData = {}

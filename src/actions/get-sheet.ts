@@ -6,7 +6,7 @@ export default async function getSheet(id: number) {
   const supabase = createClient();
   return await supabase
     .from("sheets")
-    .select("*, users(id, arranger_metadata(*))")
+    .select("*, arranger_metadata(*)")
     .eq("id", id)
     .single();
 }
