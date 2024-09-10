@@ -2,7 +2,6 @@ import { createClient } from "@/utils/supabase/server";
 import { Metadata } from "next";
 import ArrangerMain from "./main";
 import { CircleHelp } from "lucide-react";
-import { SingleArrangerData } from "@/types/arranger-data";
 
 export async function generateMetadata({
   params,
@@ -33,7 +32,7 @@ export default async function ArrangerPage({
   const supabase = createClient();
   const { data: arrangerData, error } = await supabase
     .from("arranger_metadata")
-    .select("*, sheets(*)")
+    .select("*, sheets(*), arranger_followers(*)")
     .eq("user_id", params.id)
     .single();
 

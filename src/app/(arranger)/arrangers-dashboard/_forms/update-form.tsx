@@ -16,10 +16,10 @@ import { useQueryClient } from "@tanstack/react-query";
 import { UploadButton } from "@/utils/uploadthing";
 import { useEffect } from "react";
 import { arrangersMetadataSchema } from "@/types/arrangers-metadata";
-import { type UserData } from "@/types/user-data";
 import updateArranger from "@/actions/update-arranger";
 import { Plus } from "lucide-react";
 import ArrangerAvatar from "@/components/arranger/avatar";
+import { UserDataTypes } from "@/actions/get-user";
 export default function UpdateForm({
   userData,
   closeForm,
@@ -28,7 +28,7 @@ export default function UpdateForm({
   changes,
   setChanges,
 }: {
-  userData: UserData;
+  userData: UserDataTypes;
   closeForm: () => void;
   setImageUploading: (state: boolean) => void;
   imageUploading: boolean;

@@ -17,8 +17,11 @@ import getTopArrangers from "@/actions/get-top-arrangers";
 import ArrangerCard from "./arranger/card";
 import GridViewer from "./list-viewer";
 import Loader from "./loader";
+import { useContext } from "react";
+import { UserDataContext } from "./user-data-provider";
 export default function TopArrangers() {
   const pagePreferences = usePagePreferences();
+  const { isLoading, userData } = useContext(UserDataContext);
 
   const { data: arrangers, isLoading: loadingArrangers } = useQuery({
     queryKey: ["top-arrangers"],
@@ -27,7 +30,7 @@ export default function TopArrangers() {
       return success ?? [];
     },
   });
-  if (loadingArrangers)
+  if (loadingArrangers || isLoading)
     return (
       <Loader className="h-fit w-full p-4 flex justify-center items-center">
         <div className="grid grid-cols-[24px,1fr] gap-1 text-muted-foreground">
@@ -89,7 +92,7 @@ export default function TopArrangers() {
                   key={arranger.id}
                   className="w-fit min-w-fit max-w-fit"
                 >
-                  <ArrangerCard arranger={arranger} />
+                  <ArrangerCard current_user={userData} arranger={arranger} />
                 </CarouselItem>
               ))}
             </CarouselContent>
@@ -103,7 +106,11 @@ export default function TopArrangers() {
         {pagePreferences.topArrangersView === "row" && (
           <GridViewer length={arrangers?.length!}>
             {arrangers?.map((arranger) => (
-              <ArrangerBar arranger={arranger} key={arranger.id} />
+              <ArrangerBar
+                current_user={userData}
+                arranger={arranger}
+                key={arranger.id}
+              />
             ))}
           </GridViewer>
         )}

@@ -1,3 +1,4 @@
+import { UserDataTypes } from "@/actions/get-user";
 import updateUser from "@/actions/update-user";
 import { Button } from "@/components/ui/button";
 import {
@@ -10,7 +11,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/use-toast";
 import UserAvatar from "@/components/user-avatar";
-import { UserData, userDataSchema } from "@/types/user-data";
+import { userDataSchema } from "@/types/user-data";
 import { UploadButton } from "@/utils/uploadthing";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useQueryClient } from "@tanstack/react-query";
@@ -27,7 +28,7 @@ export default function ProfileForm({
   changes,
   setChanges,
 }: {
-  userData: UserData;
+  userData: UserDataTypes;
   closeForm: () => void;
   setImageUploading: (state: boolean) => void;
   imageUploading: boolean;

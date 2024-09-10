@@ -9,10 +9,10 @@ import createPaymentIntent from "@/actions/create-payment-intent";
 import { useState } from "react";
 import { SheetData } from "@/types/sheet-data";
 import updateTransaction from "@/actions/update-transaction";
-import { UserData } from "@/types/user-data";
 import Link from "next/link";
 import CurrencyText from "./currency-text";
 import saveSheetToLibrary from "@/actions/save-sheet-to-library";
+import { UserDataTypes } from "@/actions/get-user";
 
 export default function PaymentForm({
   total,
@@ -22,7 +22,7 @@ export default function PaymentForm({
 }: {
   total: number;
   sheets: Pick<SheetData, "id" | "price">[];
-  user: UserData | null | undefined;
+  user: UserDataTypes | null;
   onSuccess: () => void;
 }) {
   const stripe = useStripe();

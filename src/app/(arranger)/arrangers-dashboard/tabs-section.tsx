@@ -10,12 +10,12 @@ import {
 } from "@/components/ui/select";
 import UploadSheetForm from "./_forms/upload-sheet-form";
 import { Library, Music, PlusIcon, StickyNote } from "lucide-react";
-import { type UserData } from "@/types/user-data";
 import { useState } from "react";
 import SheetBar from "@/components/sheet/sheet-bar";
 import ListViewer from "@/components/list-viewer";
+import { UserDataTypes } from "@/actions/get-user";
 
-export default function TabsSection({ userData }: { userData: UserData }) {
+export default function TabsSection({ userData }: { userData: UserDataTypes }) {
   const [newType, setNewType] = useState<string>("sheet");
 
   return (

@@ -18,12 +18,12 @@ export default function ArrangerBadges({
 }) {
   return (
     <div className={cn("flex gap-1", className)}>
-      {sheets && (
+      {sheets != undefined && (
         <Badge variant={"outline"} className="w-fit">
           {sheets} <Music size={12} className="ml-1" />
         </Badge>
       )}
-      {followers && (
+      {followers != undefined && (
         <Badge variant={"outline"} className="w-fit">
           {followers} <Users size={12} className="ml-1" />
         </Badge>

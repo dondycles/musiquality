@@ -11,15 +11,15 @@ import {
 import { useState } from "react";
 import { useToast } from "@/components/ui/use-toast";
 import UpdateForm from "./_forms/update-form";
-import { UserData } from "@/types/user-data";
 import { Pencil } from "lucide-react";
 import ArrangerBadges from "@/components/arranger/badges";
 import ArrangerAvatar from "@/components/arranger/avatar";
+import { UserDataTypes } from "@/actions/get-user";
 
 export default function ArrangerBasicInfoCard({
   userData,
 }: {
-  userData: UserData;
+  userData: UserDataTypes;
 }) {
   const { toast } = useToast();
   const [openForm, setOpenForm] = useState(false);
@@ -94,7 +94,7 @@ export default function ArrangerBasicInfoCard({
         </div>
         <ArrangerBadges
           className="flex-wrap mx-auto"
-          followers={123}
+          followers={userData.arranger_metadata?.arranger_followers.length ?? 0}
           sheets={userData.arranger_metadata?.sheets.length}
         />
       </div>

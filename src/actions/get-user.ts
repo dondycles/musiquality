@@ -9,7 +9,7 @@ export default async function getUser(authData: User) {
   const { data: dbData, error: dbError } = await supabase
     .from("users")
     .select(
-      "*, arranger_metadata(*, sheets(*)), transactions(*, library(*, sheets(*, sheets_url(*), arranger_metadata(*))))"
+      "*, arranger_followers(*, arranger_metadata(*)), arranger_metadata(*, sheets(*), arranger_followers(*, users(*))), transactions(*, library(*, sheets(*, sheets_url(*), arranger_metadata(*))))"
     )
     .eq("id", authData.id)
     .single();
@@ -39,3 +39,15 @@ export default async function getUser(authData: User) {
     error: null,
   };
 }
+
+type GetUserReturnType = Awaited<ReturnType<typeof getUser>>;
+
+// Exclude null from the success type
+type ExcludeNull<T> = T extends undefined
+  ? never
+  : T | T extends null
+  ? never
+  : T;
+
+// Extract the type of the success property, ensuring it doesn't include null
+export type UserDataTypes = ExcludeNull<GetUserReturnType["success"]>;

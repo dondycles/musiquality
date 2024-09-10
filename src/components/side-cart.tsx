@@ -17,19 +17,15 @@ import { CheckCircle, CreditCard, ShoppingCart, X } from "lucide-react";
 import PaymentForm from "./payment-form";
 import { Elements } from "@stripe/react-stripe-js";
 import getStripe from "@/utils/stripe";
-import { UserData } from "@/types/user-data";
 import { useState } from "react";
 import { ScrollArea } from "./ui/scroll-area";
 import Link from "next/link";
 import { Progress } from "./ui/progress";
 import { useQueryClient } from "@tanstack/react-query";
 import { motion } from "framer-motion";
+import { UserDataTypes } from "@/actions/get-user";
 const stripe = getStripe();
-export default function SideCart({
-  user,
-}: {
-  user: UserData | null | undefined;
-}) {
+export default function SideCart({ user }: { user: UserDataTypes | null }) {
   var _ = require("lodash");
   const queryClient = useQueryClient();
   const cart = useCartStore();
